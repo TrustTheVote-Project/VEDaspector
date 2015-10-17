@@ -1,0 +1,28 @@
+<% content_for :title do %>
+    <%= @title %>
+<% end %>
+
+<% if @show_welcome_message %>
+<div class="alert <% unless @entities.blank? %>alert-info<% else %>alert-warning<% end %> inline-block">
+    <p>Welcome to VEDaspector, a tool for exploring election reports in the VSSC election data format.</p>
+
+    <% unless @entities.blank? %>
+    <p>To get started, select one of the loaded Election Reports below.</p>
+    <% else %>
+    <p>No Election Reports have been loaded into VEDaspector. Please see the <a class="alert-link" href="https://github.com/TrustTheVote-Project/VEDaspector/blob/master/README.md">README file</a> for instructions on how to get started.</p>
+    <% end %>
+
+    <p>TODO: include link to standard.</p>
+</div>
+<% end %>
+
+<% unless @entities.blank? %>
+<h3><%= entity_type_title @entity_type, pluralize: true %></h3>
+<ul>
+<% @entities.each do |e| %>
+    <li><a href="<%= view_entity_link e %>"><%= title_string(e) %></a></li>
+<% end %>
+</ul>
+<% else %>
+<h3>No <%= entity_type_title @entity_type, pluralize: true %> were found.</h3>
+<% end %>

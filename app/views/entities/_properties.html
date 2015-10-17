@@ -1,0 +1,42 @@
+<% unless values.blank? %>
+<div>
+    <dl class="dl-horizontal">
+    <% values.each do |prop| %>
+        <dt><%= prop.name %></dt>
+        <dd><%= prop.rendered_content %></dd>
+    <% end %>
+    <dl>
+</div>
+<% end %>
+
+<% unless entities.blank? %>
+    <% entities.each do |entity| %>
+        <h4><a href="<%= view_entity_link entity.value %>"><%= entity.name %></a></h4>
+        <div>
+            <dl class="dl-horizontal">
+                <% entity.child_value_properties.take(10).each do |prop| %>
+                    <dt><%= prop.name %></dt>
+                    <dd><%= prop.rendered_content %></dd>
+                <% end %>        
+            </dl>
+        </div>
+    <% end %>
+<% end %>
+
+<% unless collections.blank? %>
+    <% collections.each do |collection| %>
+        <h4><%= collection.name %> (<%= collection.value.count %>)</h4>
+        <% unless collection.value.blank? %>
+            <ul class="list-group">
+            <% collection.value.take(@max_shown_collection_items).each do |entity| %>
+                <li class="list-group-item"><a href="<%= view_entity_link entity %>"><%= title_string entity %></a></li>
+            <% end %>
+            <% if collection.value.count > @max_shown_collection_items %>
+                <li class="list-group-item">
+                    <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.collection_value_type, pluralize: true %> omitted
+                </li>
+            <% end %>
+            </ul>
+        <% end %>
+    <% end %>
+<% end %>
