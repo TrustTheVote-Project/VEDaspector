@@ -1,3 +1,19 @@
+Vssc::BallotStyle.class_eval do
+    def inspector_title_string
+        if object_id
+            "Ballot Style: #{object_id}"
+        else
+            "Unidentified Ballot Style"
+        end
+    end
+end
+
+Vssc::Candidate.class_eval do
+    def inspector_title_string
+        "Contest: #{ballot_name.preferred_language_text}"
+    end
+end
+
 Vssc::Contest.class_eval do
     def inspector_title_string
         "Contest: #{name}"
@@ -36,27 +52,27 @@ end
 
 
 Vssc::Office.class_eval do
-
     def inspector_title_string
         "Office: #{electoral_district_identifier}"
     end
-
 end
 
 Vssc::Party.class_eval do
-
     def inspector_title_string
         "Party: #{name.preferred_language_text}"
     end
-
 end
 
 Vssc::ReportingUnit.class_eval do
-
     def inspector_title_string
         "Reporting Unit: #{name || 'Unnamed'}"
     end
+end
 
+Vssc::Enum::IdentifierType.class_eval do
+    def inspector_title_string
+        "Idnetifier: #{identifier_type} #{Value}"
+    end
 end
 
 module Vssc::ViewableEntity
