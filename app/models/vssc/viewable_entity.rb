@@ -20,6 +20,12 @@ Vssc::Contest.class_eval do
     end
 end
 
+Vssc::OrderedContest.class_eval do
+    def inspector_title_string
+        "OrderedContest: #{contest_identifier}"
+    end
+end
+
 Vssc::Election.class_eval do
 
     def inspector_title_string

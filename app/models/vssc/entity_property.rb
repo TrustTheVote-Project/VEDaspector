@@ -2,11 +2,11 @@ class Vssc::EntityProperty
 
     attr_reader :value
 
-    def initialize(entity, property_name, property)
+    def initialize(entity, property_name, property, value=nil)
         @entity = entity
         @property_name = property_name
         @property = property
-        @value = @entity.send @property[:method]
+        @value = value || @entity.send(@property[:method])
     end
 
     def name
@@ -75,6 +75,13 @@ class Vssc::EntityProperty
         properties += entity.xml_attributes.map do |name, attribute|
             Vssc::EntityProperty.new(entity, name, attribute)
         end.compact 
+
+        if entity.class.text_node_method
+            text_value = entity.send entity.class.text_node_method
+            if text_value
+                properties << Vssc::EntityProperty.new(entity, entity.class.text_node_method.to_s, {}, text_value)
+            end
+        end
 
         properties
     end
