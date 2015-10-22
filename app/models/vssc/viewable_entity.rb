@@ -65,7 +65,15 @@ end
 
 Vssc::InternationalizedText.class_eval do
 
-    def inspector_entity_classification
+    def inspector_title_string
+        if label
+            "Internationalized Text for #{label}"
+        else
+            "Internationalized Text"
+        end
+    end
+
+    def inspector_preferred_classification
         :value
     end
 
@@ -77,6 +85,11 @@ Vssc::InternationalizedText.class_eval do
 
 end
 
+Vssc::LanguageString.class_eval do
+    def inspector_title_string
+        "Language String: #{text} (#{language})"
+    end
+end
 
 Vssc::Office.class_eval do
     def inspector_title_string

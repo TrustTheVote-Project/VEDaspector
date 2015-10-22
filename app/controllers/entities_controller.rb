@@ -22,7 +22,7 @@ class EntitiesController < ApplicationController
         @entity = @entity_type.find(entity_id)
 
         @max_shown_collection_items = 10
-        @max_shown_linked_entity_properties = 10
+        @max_shown_subentity_properties = 10
     end
 
 end

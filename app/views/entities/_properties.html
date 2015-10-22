@@ -14,10 +14,14 @@
         <h4><a href="<%= view_entity_link entity.value %>"><%= entity.name %></a></h4>
         <div>
             <dl class="dl-horizontal">
-                <% entity.child_value_properties.take(10).each do |prop| %>
+                <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
                     <dt><%= prop.name %></dt>
                     <dd><%= prop.rendered_content %></dd>
-                <% end %>        
+                <% end %>
+                <% if entity.child_value_properties.size > @max_shown_subentity_properties %>
+                    <dt></dt>
+                    <dd><%= entity.child_value_properties.size - @max_shown_subentity_properties %> <%= entity.name %> properties omitted</dd>
+                <% end %>
             </dl>
         </div>
     <% end %>
