@@ -1,7 +1,5 @@
 class Vssc::EntityProperty
 
-    attr_reader :value
-
     def initialize(entity, property_name, property, value=nil)
         @entity = entity
         @property_name = property_name
@@ -17,10 +15,18 @@ class Vssc::EntityProperty
         end
     end
 
+    def value
+        if @value.respond_to? :inspector_preferred_value
+            @value.inspector_preferred_value
+        else
+            @value
+        end
+    end
+
     def rendered_content
         case @value
         when Vssc::InternationalizedText
-            @value.preferred_language_text
+            @value.inspector_preferred_text
         else
             @value
         end
@@ -29,10 +35,11 @@ class Vssc::EntityProperty
     # Classifies property as a singular value, a link to another entity, or a
     # collection of multiple entities.
     def classify_property
+        if @value.respond_to? :inspector_preferred_classification
+            return @value.inspector_preferred_classification
+        end
+
         case @value
-        # Hardcode InternationalizedText as value for inspection purposes.
-        when Vssc::InternationalizedText
-            :value
         when ActiveRecord::Associations::CollectionProxy
             :collection
         when ActiveRecord::Base
