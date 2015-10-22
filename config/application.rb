@@ -21,5 +21,13 @@ module VEDaspector
 
     config.preferred_language = "en-US"
 
+    config.autoload_paths << Rails.root.join('lib')
+
+    config.to_prepare do
+        Dir.glob(Rails.root + "app/decorators/**/*.rb").each do |c|
+            require_dependency(c)
+        end
+    end
+
   end
 end
