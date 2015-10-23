@@ -1,0 +1,2 @@
+Vssc::OrderedContestBallotSelectionIdRef.class_eval do
+end

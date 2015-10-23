@@ -2,7 +2,7 @@
 <div>
     <dl class="dl-horizontal">
     <% values.each do |prop| %>
-        <dt><%= prop.name %></dt>
+        <dt title="<%= prop.name %>"><%= prop.name %></dt>
         <dd><%= prop.rendered_content %></dd>
     <% end %>
     <dl>
@@ -15,7 +15,7 @@
         <div>
             <dl class="dl-horizontal">
                 <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
-                    <dt><%= prop.name %></dt>
+                    <dt title="<%= prop.name %>"><%= prop.name %></dt>
                     <dd><%= prop.rendered_content %></dd>
                 <% end %>
                 <% if entity.child_value_properties.size > @max_shown_subentity_properties %>

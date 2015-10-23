@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/TrustTheVote-Project/VEDaStore
-  revision: e96d964c03aac6063e354eb347cf499eed2ab4be
+  revision: 913dca731bbe839119565bc16df1869f9233f41d
   specs:
-    VEDaStore (1.0.2)
+    VEDaStore (1.0.4)
       nokogiri (~> 1.6.0)
       rails (~> 4.2.1)
 
@@ -148,7 +148,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  VEDaStore (= 1.0.2)!
+  VEDaStore (= 1.0.4)!
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
