@@ -2,6 +2,14 @@
     <%= title_string @entity %>
 <% end %>
 
+<% unless @entity_actions.blank? %>
+<div class="entity-actions">
+    <% @entity_actions.each do |action| %>
+        <a class="btn btn-default<% if action[:button_class] %> <%= action[:button_class] %><% end %>" href="<%= action[:href] %>"><%= action[:title] %></a>
+    <% end %>
+</div>
+<% end %>
+
 <h4><%= title_string @entity %></h4>
 
 <%= render_entity_properties @entity %>

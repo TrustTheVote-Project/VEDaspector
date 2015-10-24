@@ -25,6 +25,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem "VEDaStore", "1.0.4", :git=>"https://github.com/TrustTheVote-Project/VEDaStore", require: 'vssc_rails'
 
+gem 'jquery_file_download-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

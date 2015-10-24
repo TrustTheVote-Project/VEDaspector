@@ -12,17 +12,19 @@
 <% unless entities.blank? %>
     <% entities.each do |entity| %>
         <h4><a href="<%= view_entity_link entity.value %>"><%= entity.name %></a></h4>
-        <div>
-            <dl class="dl-horizontal">
-                <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
-                    <dt title="<%= prop.name %>"><%= prop.name %></dt>
-                    <dd><%= prop.rendered_content %></dd>
-                <% end %>
-                <% if entity.child_value_properties.size > @max_shown_subentity_properties %>
-                    <dt></dt>
-                    <dd><%= entity.child_value_properties.size - @max_shown_subentity_properties %> <%= entity.name %> properties omitted</dd>
-                <% end %>
-            </dl>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
+                        <dt title="<%= prop.name %>"><%= prop.name %></dt>
+                        <dd><%= prop.rendered_content %></dd>
+                    <% end %>
+                    <% if entity.child_value_properties.size > @max_shown_subentity_properties %>
+                        <dt></dt>
+                        <dd><%= entity.child_value_properties.size - @max_shown_subentity_properties %> <%= entity.name %> properties omitted</dd>
+                    <% end %>
+                </dl>
+            </div>
         </div>
     <% end %>
 <% end %>
@@ -31,16 +33,16 @@
     <% collections.each do |collection| %>
         <h4><%= collection.name %> (<%= collection.value.count %>)</h4>
         <% unless collection.value.blank? %>
-            <ul class="list-group">
+            <div class="list-group">
             <% collection.value.take(@max_shown_collection_items).each do |entity| %>
-                <li class="list-group-item"><a href="<%= view_entity_link entity %>"><%= title_string entity %></a></li>
+                <a class="list-group-item" href="<%= view_entity_link entity %>"><%= title_string entity %></a>
             <% end %>
             <% if collection.value.count > @max_shown_collection_items %>
-                <li class="list-group-item">
+                <a class="list-group-item" href="#">
                     <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.collection_value_type, pluralize: true %> omitted
-                </li>
+                </a>
             <% end %>
-            </ul>
+            </div>
         <% end %>
     <% end %>
 <% end %>

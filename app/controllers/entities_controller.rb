@@ -36,8 +36,31 @@ class EntitiesController < ApplicationController
     entity_id = params[:entity_id]
     @entity = @entity_type.find(entity_id)
 
+    @entity_actions = []
+
+    if @entity.respond_to? :inspector_action_buttons
+      @entity_actions += @entity.inspector_action_buttons(request)
+    end
+
     @max_shown_collection_items = 10
     @max_shown_subentity_properties = 10
+  end
+
+  def entity_action
+    input_entity_type = params[:entity_type]
+    entity_type = lookup_entity_type input_entity_type
+    raise "Invalid entity type: #{input_entity_type}" unless entity_type
+
+    entity_id = params[:entity_id]
+    entity = entity_type.find(entity_id)
+
+    action = params[:entity_action]
+
+    if entity.respond_to? action
+      entity.send(action, self)
+    else
+      raise "Unexpected action '#{action}' for #{entity}"
+    end
   end
 
 end

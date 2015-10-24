@@ -12,6 +12,25 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.fileDownload
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+
+
+$(function() {
+    $('.download_link').on('click', function(e) {
+        e.preventDefault();
+
+        $('#modal_spinner').modal();
+        $.fileDownload($(this).prop("href"), {
+            successCallback: function (url) {
+                $('#modal_spinner').modal('hide');
+            },
+            failCallback: function (url) {
+                $('#modal_spinner').modal('hide');
+                alert("An error occured, and the file could not be downloaded. Please check VEDaspector’s logs.");
+            }
+        });
+    });
+});
