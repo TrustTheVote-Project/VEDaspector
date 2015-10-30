@@ -64,9 +64,11 @@ module EntitiesHelper
       render partial: "editors/text", locals: { prop: property }
     elsif value_type == VsscConstants::DATETIME_TYPE
       render partial: "editors/datetime", locals: { prop: property }
+    elsif value_type == VsscConstants::DATE_TYPE
+      render partial: "editors/date", locals: { prop: property }
     elsif value_type == VsscConstants::BOOLEAN_TYPE
       render partial: "editors/boolean", locals: { prop: property }
-    elsif value_type.included_modules.include? VsscEnum
+    elsif value_type.respond_to? :included_modules and value_type.included_modules.include? VsscEnum
       render partial: "editors/enum", locals: { prop: property }
     else
       logger.warn "No property editor provided for property #{property.property_identifier} of type #{value_type}. Defaulting to string editor."
