@@ -1,11 +1,13 @@
 class EntitiesController < ApplicationController
 
+  def initialize
+    super
+    @max_shown_collection_items = 10
+    @max_shown_subentity_properties = 10
+  end
+
   def lookup_vssc_class(name)
-    begin
-      Object.const_get("Vssc").const_get(name)
-    rescue NameError
-      nil
-    end
+    VsscEntity::ENTITY_CLASSES.find { |klass| klass.name.demodulize == name }
   end
 
   # Returns Ruby class for a viewable VSSC entity type, or nil.
@@ -36,14 +38,35 @@ class EntitiesController < ApplicationController
     entity_id = params[:entity_id]
     @entity = @entity_type.find(entity_id)
 
-    @entity_actions = []
+    @entity_actions = [
+      {:title => "Edit", :action_path => 'edit', :button_class => 'btn-default'}
+    ]
 
     if @entity.respond_to? :inspector_action_buttons
       @entity_actions += @entity.inspector_action_buttons(request)
     end
+  end
 
-    @max_shown_collection_items = 10
-    @max_shown_subentity_properties = 10
+  def edit
+    input_entity_type = params[:entity_type]
+    @entity_type = lookup_entity_type input_entity_type
+    raise "Invalid entity type: #{input_entity_type}" unless @entity_type
+
+    entity_id = params[:entity_id]
+    @entity = @entity_type.find(entity_id)
+  end
+
+  def update
+    input_entity_type = params[:entity_type]
+    @entity_type = lookup_entity_type input_entity_type
+    raise "Invalid entity type: #{input_entity_type}" unless @entity_type
+
+    entity_id = params[:entity_id]
+    @entity = @entity_type.find(entity_id)
+
+    @entity.update_entity(params[:entity])
+
+    redirect_to view_context.entity_view_link(@entity)
   end
 
   def entity_action

@@ -1,8 +1,9 @@
 Vssc::ElectionReport.class_eval do
+  include VsscEntity
 
   def download_report(controller)
     if election and election.name
-      filename = "#{election.name.inspector_preferred_text}_report.xml"
+      filename = "#{election.name.preferred_language_text}_report.xml"
     else
       filename = "election_report.xml"
     end
@@ -12,16 +13,12 @@ Vssc::ElectionReport.class_eval do
   end
 
   def inspector_action_buttons(request)
-    [{:title => "Download", :href => request.original_url + '/download_report', :button_class => 'download_link btn-success'}]
+    [{:title => "Download", :action_path => 'download_report', :button_class => 'download_link btn-success'}]
   end
 
   def inspector_title_string
     if election and election.name
-        s = "Election Report: #{election.name.inspector_preferred_text}"
-        if generated_date
-          s += " (#{generated_date.to_formatted_s(:short_date)})"
-        end
-        s
+        "Election Report: #{election.name.preferred_language_text}"
     else
         "Unnamed Election Report"
     end

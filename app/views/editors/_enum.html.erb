@@ -1,0 +1,8 @@
+<div class="form-group dropdown">
+    <label for="<%= prop.property_identifier %>"><%= prop.name %></label>
+    <select name="entity[<%= prop.property_identifier %>]">
+        <% prop.enum_values.each do |enum_value| %>
+            <option <% if enum_value[:selected] %>selected="selected"<% end %>><%= enum_value[:name] %></option>
+        <% end %>
+    </select>
+</div>

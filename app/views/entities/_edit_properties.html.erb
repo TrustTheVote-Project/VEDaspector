@@ -1,0 +1,7 @@
+<% unless values.blank? %>
+<div>
+    <% values.each do |prop| %>
+        <%= render_property_editor prop %>
+    <% end %>
+</div>
+<% end %>

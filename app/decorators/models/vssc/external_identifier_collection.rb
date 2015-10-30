@@ -1,14 +1,7 @@
 Vssc::ExternalIdentifierCollection.class_eval do
+  include VsscEntity
 
-    def inspector_preferred_name
-      "External Identifiers"
-    end
+  preferred_name "External Identifiers"
+  present_as_collection :external_identifiers
 
-    def inspector_preferred_classification
-        :collection
-    end
-
-    def inspector_preferred_value
-        external_identifiers
-    end
 end

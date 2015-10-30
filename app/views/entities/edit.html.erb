@@ -1,0 +1,18 @@
+<% content_for :title do %>
+    Editing <%= title_string @entity %>
+<% end %>
+
+<%= form_tag do %>
+
+    <h4>Editing <%= title_string @entity %></h4>
+
+    <br>
+
+    <%= render_entity_editor_form @entity %>
+
+    <div class="entity-actions-bottom">
+        <a href="<%= entity_view_link @entity %>" class="btn btn-default">Cancel</a>
+        <button type="submit" class="btn btn-success">Save</button>
+    </div>
+
+<% end %>

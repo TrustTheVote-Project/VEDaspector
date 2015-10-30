@@ -20,7 +20,7 @@
 <h3><%= entity_type_title @entity_type, pluralize: true %></h3>
 <ul>
 <% @entities.each do |e| %>
-    <li><a href="<%= view_entity_link e %>"><%= title_string(e) %></a></li>
+    <li><a href="<%= entity_view_link e %>"><%= title_string(e) %></a></li>
 <% end %>
 </ul>
 <% else %>

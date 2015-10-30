@@ -3,9 +3,9 @@
 <% end %>
 
 <% unless @entity_actions.blank? %>
-<div class="entity-actions">
+<div class="entity-actions-sidebox">
     <% @entity_actions.each do |action| %>
-        <a class="btn btn-default<% if action[:button_class] %> <%= action[:button_class] %><% end %>" href="<%= action[:href] %>"><%= action[:title] %></a>
+        <a class="btn btn-default<% if action[:button_class] %> <%= action[:button_class] %><% end %>" href="<%= entity_action_link @entity, action[:action_path] %>"><%= action[:title] %></a>
     <% end %>
 </div>
 <% end %>

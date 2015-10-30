@@ -1,0 +1,59 @@
+<% unless values.blank? %>
+<div>
+    <dl class="dl-horizontal">
+    <% values.each do |prop| %>
+        <dt title="<%= prop.name %>"><%= prop.name %></dt>
+        <dd><%= prop.value %></dd>
+    <% end %>
+    <dl>
+</div>
+<% end %>
+
+<% unless entities.blank? %>
+    <% entities.each do |entity| %>
+        <% if entity.entity_present? %>
+            <h4><a href="<%= entity_view_link entity.value %>"><%= entity.name %></a></h4>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
+                            <dt title="<%= prop.name %>"><%= prop.name %></dt>
+                            <dd><%= prop.value %></dd>
+                        <% end %>
+                        <% if entity.child_value_properties.size > @max_shown_subentity_properties %>
+                            <dt></dt>
+                            <dd><%= entity.child_value_properties.size - @max_shown_subentity_properties %> <%= entity.name %> properties omitted</dd>
+                        <% end %>
+                    </dl>
+                </div>
+            </div>
+        <% else %>
+            <h4><%= entity.name %> (Missing)</h4>
+            <div class="list-group">
+                <a class="list-group-item" href="#">Add <%= entity.name %></a>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>
+
+<% unless collections.blank? %>
+    <% collections.each do |collection| %>
+        <h4><%= collection.name %> (<%= collection.value.count %>)</h4>
+        <% unless collection.value.blank? %>
+            <div class="list-group">
+            <% collection.value.take(@max_shown_collection_items).each do |entity| %>
+                <a class="list-group-item" href="<%= entity_view_link entity %>"><%= title_string entity %></a>
+            <% end %>
+            <% if collection.value.count > @max_shown_collection_items %>
+                <a class="list-group-item" href="#">
+                    <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.collection_value_type, pluralize: true %> omitted
+                </a>
+            <% end %>
+            </div>
+        <% else %>
+            <div class="list-group">
+                <a class="list-group-item" href="#">Add <%= collection.name.singularize %></a>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>

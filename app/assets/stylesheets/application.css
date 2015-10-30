@@ -23,8 +23,18 @@
     display: inline-block;
 }
 
-.entity-actions {
+.float-right {
     float: right;
+}
+
+.entity-actions-sidebox {
+    float: right;
+}
+
+.entity-actions-bottom {
+    float: right;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 #modal_spinner, #modal_spinner .modal-dialog {
@@ -35,7 +45,6 @@
     left: 50%;
     transform: translateX(-50%);
 }
-
 
 .glyphicon.spinning {
     animation: spin 1s infinite linear;
