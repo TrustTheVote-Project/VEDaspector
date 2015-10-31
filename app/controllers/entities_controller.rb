@@ -53,9 +53,11 @@ class EntitiesController < ApplicationController
   end
 
   def create
+    render text: "TODO"
   end
 
   def save
+    render text: "TODO"
   end
 
   ### Entity Actions
@@ -111,9 +113,12 @@ class EntitiesController < ApplicationController
   def collection_insert
     assign_entity_type!
     assign_entity!
+
+    render text: "TODO"
   end
 
   def collection_insert_save
+    render text: "TODO"
   end
 
 end
