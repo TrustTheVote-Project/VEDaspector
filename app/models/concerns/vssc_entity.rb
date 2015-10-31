@@ -6,7 +6,6 @@ module VsscEntity
   # Unlike ActiveSupport::Concern's included block, this logic
   # needs to be executed for both parent and child classes.
   def self.included(base)
-    puts "#{base}"
     unless ENTITY_CLASSES.include? base
       ENTITY_CLASSES << base
     else
