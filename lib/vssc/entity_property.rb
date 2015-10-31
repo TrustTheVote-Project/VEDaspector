@@ -1,22 +1,22 @@
 class Vssc::EntityProperty
 
-  attr_reader :entity, :property_definition
+  attr_reader :entity, :property_definition, :reference_name
 
   def initialize(entity, property_definition, reference_name)
     @entity = entity
     @property_definition = property_definition
-    @value = @entity.send(@property_definition[:method])
     @reference_name = reference_name
+    @value = @entity.send(@property_definition[:method])
   end
 
-  # Returns Rails association for linked entity/collection.
-  # Will return nil for value properties.
+  # THe Rails association for the linked entity or collection if one exists.
+  # @return [ActiveRecord::Association, nil]
   def property_association
     @entity.class.reflect_on_association @property_definition[:method]
   end
 
-  # Returns inspector metadata for entity/collection linked by this property.
-  # Will return nil for value properties.
+  # The inspector metadata of the associated class if present.
+  # @return [Hash, nil]
   def associated_class_metadata
     association = property_association
     if association
@@ -26,6 +26,8 @@ class Vssc::EntityProperty
     end
   end
 
+  # The name of the property, suitable for presentation to the user.
+  # @return [String]
   def name
     metadata = associated_class_metadata
     if metadata and metadata.has_key? :preferred_name
@@ -35,6 +37,7 @@ class Vssc::EntityProperty
     end
   end
 
+  # @return The property's value. Can be nil.
   def value
     metadata = associated_class_metadata
     if metadata and metadata[:present_as_collection]
@@ -50,12 +53,15 @@ class Vssc::EntityProperty
     end
   end
 
+  # A stable identifier for this property.
+  # @return [Symbol]
   def property_identifier
     @property_definition[:method]
   end
 
   # Classifies property as a singular value, a link to another entity, or a
   # collection of multiple entities.
+  # @return [Symbol]
   def classify_property
     association = property_association
     metadata = associated_class_metadata
@@ -69,11 +75,8 @@ class Vssc::EntityProperty
     end
   end
 
+  # @return [Class, String] The type of this property's value.
   def value_type
-    unless [:value, :collection].include? classify_property
-      raise "value_type should only be called on a value or collection property"
-    end
-
     metadata = associated_class_metadata
     if metadata and metadata.has_key? :present_as_value
       metadata[:present_as_value][:type]
@@ -82,6 +85,8 @@ class Vssc::EntityProperty
     end
   end
 
+  # @raise [Exception] If this is not an enumeration property.
+  # @return [Hash]
   def enum_values
     unless classify_property == :value and value_type.included_modules.include? VsscEnum
       raise "enum_values should only be called on a enumerated value"
@@ -98,6 +103,8 @@ class Vssc::EntityProperty
   end
 
   # Lazily fetch value properties of child entity.
+  # @raise [Exception] If this is not an entity property.
+  # @return [Array<Vssc::EntityProperty>] The linked entity's child properties
   def child_value_properties
     unless classify_property == :entity
       raise "child_value_properties should only be called on an entity property"
