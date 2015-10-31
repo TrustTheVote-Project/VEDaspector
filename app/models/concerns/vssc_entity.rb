@@ -3,11 +3,26 @@ module VsscEntity
 
   ENTITY_CLASSES = []
 
-  included do
-    ENTITY_CLASSES << self unless ENTITY_CLASSES.include? self
+  # Unlike ActiveSupport::Concern's included block, this logic
+  # needs to be executed for both parent and child classes.
+  def self.included(base)
+    puts "#{base}"
+    unless ENTITY_CLASSES.include? base
+      ENTITY_CLASSES << base
+    else
+      Rails.logger.warn "VsscEntity has been included multiple times in #{base}"
+    end
 
-    class << self; attr_accessor :inspector_metadata end
-    self.inspector_metadata = {}
+    class << base; attr_accessor :inspector_metadata end
+    if base.inspector_metadata.nil?
+      base.inspector_metadata = {}
+    else
+      Rails.logger.warn "#{base}.inspector_metadata has already been set"
+    end
+  end
+
+  def entity_property(property_identifier)
+    entity_properties.find { |p| p.property_identifier == property_identifier }
   end
 
   def entity_properties
@@ -63,7 +78,32 @@ module VsscEntity
     self.save!
   end
 
-  # Customization Methods
+  def entity_actions
+    actions = [
+      {:title => "Edit", :action => 'edit', :button_class => 'btn-default'},
+      {:title => "Delete", :action => '', :button_class => 'btn-danger delete-button'},
+    ]
+
+    if self.class.inspector_metadata.has_key? :entity_actions
+      actions = self.class.inspector_metadata[:entity_actions] + actions
+    end
+
+    actions
+  end
+
+  def has_entity_action?(action, ignore_base_actions=true)
+    if ignore_base_actions
+      if self.class.inspector_metadata.has_key? :entity_actions
+        self.class.inspector_metadata[:entity_actions].any? { |a| a[:action] == action }
+      else
+        false
+      end
+    else
+      entity_actions.any? { |a| a[:action] == action }
+    end
+  end
+
+  ### Customization Methods
 
   module ClassMethods
 
@@ -87,6 +127,17 @@ module VsscEntity
     # Allow entity to be presented as a collection.
     def present_as_collection(collection_method)
       inspector_metadata[:present_as_collection] = {get: collection_method}
+    end
+
+    def entity_action(**options)
+      if not options[:title]
+        raise "Missing required title parameter"
+      elsif not options[:action]
+        raise "Missing required getter parameter"
+      end
+
+      inspector_metadata[:entity_actions] ||= []
+      inspector_metadata[:entity_actions] << options
     end
 
   end

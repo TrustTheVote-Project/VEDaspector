@@ -1,23 +1,15 @@
 module EntitiesHelper
 
+  ### Display Helpers
+
   def entity_type_title(entity_type, pluralize: false)
-    entity_name = entity_type.name.demodulize 
+    entity_name = entity_type.name.demodulize
     entity_name = entity_name.pluralize if pluralize
     entity_name.underscore.split('_').join(' ').titleize
   end
 
-  def entity_view_link(entity)
-    entity_type = entity.class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/#{entity.id}"
-  end
-
-  def entity_action_link(entity, action_name)
-    entity_type = entity.class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/#{entity.id}/#{action_name}"
-  end
-
   # Returns plaintext string describing entity
-  def title_string(entity)
+  def entity_title_string(entity)
     if entity.respond_to? :inspector_title_string
       entity.inspector_title_string
     else
@@ -25,6 +17,35 @@ module EntitiesHelper
       entity.class.name
     end
   end
+
+  ### Entity Links
+
+  def entity_type_create_link(entity_class)
+    entity_type = entity_class.name.demodulize.pluralize.underscore
+    "/#{entity_type}/new"
+  end
+
+  def entity_view_link(entity)
+    entity_type = entity.class.name.demodulize.pluralize.underscore
+    "/#{entity_type}/#{entity.id}"
+  end
+
+  def entity_action_link(entity, action)
+    entity_type = entity.class.name.demodulize.pluralize.underscore
+    "/#{entity_type}/#{entity.id}/#{action}"
+  end
+
+  def collection_view_link(collection)
+    entity_type = collection.entity.class.name.demodulize.pluralize.underscore
+    "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}"
+  end
+
+  def collection_add_link(collection)
+    entity_type = collection.entity.class.name.demodulize.pluralize.underscore
+    "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}/add"
+  end
+
+  ### Rendering
 
   # Renders list of entity's displayable elements and attributes.
   def render_entity_properties(entity)

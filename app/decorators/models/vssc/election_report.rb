@@ -1,6 +1,8 @@
 Vssc::ElectionReport.class_eval do
   include VsscEntity
 
+  entity_action :title => 'Download', :action => 'download-report', :button_class => 'download-button btn-success'
+
   def download_report(controller)
     if election and election.name
       filename = "#{election.name.preferred_language_text}_report.xml"
@@ -10,10 +12,6 @@ Vssc::ElectionReport.class_eval do
 
     content = self.to_xml_node.to_xml
     controller.send_data_and_set_cookie content, filename, 'application/xml; charset=utf-8'
-  end
-
-  def inspector_action_buttons(request)
-    [{:title => "Download", :action_path => 'download_report', :button_class => 'download_link btn-success'}]
   end
 
   def inspector_title_string

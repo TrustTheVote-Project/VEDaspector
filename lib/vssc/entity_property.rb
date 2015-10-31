@@ -1,5 +1,7 @@
 class Vssc::EntityProperty
 
+  attr_reader :entity
+
   def initialize(entity, property_name, property, value=nil)
     @entity = entity
     @property_name = property_name
@@ -70,8 +72,8 @@ class Vssc::EntityProperty
   end
 
   def value_type
-    unless classify_property == :value
-      raise "value_type should only be called on a value property"
+    unless [:value, :collection].include? classify_property
+      raise "value_type should only be called on a value or collection property"
     end
 
     metadata = associated_class_metadata
@@ -88,18 +90,6 @@ class Vssc::EntityProperty
     end
 
     not @value.nil?
-  end
-
-  def is_boolean_true
-    unless classify_property == :value and value_type == VsscConstants::BOOLEAN_TYPE
-      raise "is_boolean_true should only be called on a boolean value"
-    end
-
-    if @value
-      @value.casecmp('true') == 0
-    else
-      false
-    end
   end
 
   def enum_values
@@ -134,14 +124,6 @@ class Vssc::EntityProperty
     end
     
     @child_value_properties
-  end
-
-  def collection_value_type
-    unless classify_property == :collection
-      raise "collection_value_type should only be called on a collection property"
-    end
-
-    @property[:type]
   end
 
 end

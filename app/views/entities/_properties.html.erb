@@ -38,21 +38,21 @@
 
 <% unless collections.blank? %>
     <% collections.each do |collection| %>
-        <h4><%= collection.name %> (<%= collection.value.count %>)</h4>
+        <h4><a href="<%= collection_view_link collection %>"><%= collection.name %> (<%= collection.value.count %>)</a></h4>
         <% unless collection.value.blank? %>
             <div class="list-group">
-            <% collection.value.take(@max_shown_collection_items).each do |entity| %>
-                <a class="list-group-item" href="<%= entity_view_link entity %>"><%= title_string entity %></a>
-            <% end %>
-            <% if collection.value.count > @max_shown_collection_items %>
-                <a class="list-group-item" href="#">
-                    <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.collection_value_type, pluralize: true %> omitted
-                </a>
-            <% end %>
+                <% collection.value.take(@max_shown_collection_items).each do |entity| %>
+                    <a class="list-group-item" href="<%= entity_view_link entity %>"><%= entity_title_string entity %></a>
+                <% end %>
+                <% if collection.value.count > @max_shown_collection_items %>
+                    <a class="list-group-item" href="<%= collection_view_link collection %>">
+                        <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.value_type, pluralize: true %> omitted
+                    </a>
+                <% end %>
             </div>
         <% else %>
             <div class="list-group">
-                <a class="list-group-item" href="#">Add <%= collection.name.singularize %></a>
+                <a class="list-group-item" href="<%= collection_add_link collection %>">Add <%= collection.name.singularize %></a>
             </div>
         <% end %>
     <% end %>

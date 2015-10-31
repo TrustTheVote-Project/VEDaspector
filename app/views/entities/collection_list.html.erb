@@ -1,0 +1,29 @@
+<% content_for :title do %>
+    <%= entity_title_string @entity %> :: <%= @collection.name %>
+<% end %>
+
+<h4><a href="<%= entity_view_link @entity %>"><%= entity_title_string @entity %></a> > <%= @collection.name %> (<%= @collection.value.count %>)</h4>
+
+<br />
+
+<% unless @collection.value.blank? %>
+    <div>
+        <div class="list-group">
+            <% @collection.value.take(@max_shown_collection_items).each do |entity| %>
+                <a class="list-group-item" href="<%= entity_view_link entity %>">
+                    <%= entity_title_string entity %>
+                </a>
+            <% end %>
+        </div>
+    </div>
+<% else %>
+    <div class="panel panel-default">
+      <div class="panel-body bg-info">
+        <div class="bg-info">No <%= @collection.name %> have been added for this <%= entity_type_title @entity.class %>.</div>
+      </div>
+    </div>
+<% end %>
+
+<div>
+    <a class="btn btn-default" href="<%= collection_add_link @collection %>">Add <%= @collection.name.singularize %></a>
+</div>

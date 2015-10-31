@@ -37,11 +37,11 @@
     margin-bottom: 2em;
 }
 
-#modal_spinner, #modal_spinner .modal-dialog {
+#modal-spinner, #modal-spinner .modal-dialog {
     width: 200px;
 }
 
-#modal_spinner {
+#modal-spinner {
     left: 50%;
     transform: translateX(-50%);
 }

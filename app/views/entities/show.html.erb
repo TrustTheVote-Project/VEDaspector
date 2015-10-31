@@ -1,15 +1,18 @@
 <% content_for :title do %>
-    <%= title_string @entity %>
+    <%= entity_title_string @entity %>
 <% end %>
 
-<% unless @entity_actions.blank? %>
+<% unless @entity.entity_actions.blank? %>
 <div class="entity-actions-sidebox">
-    <% @entity_actions.each do |action| %>
-        <a class="btn btn-default<% if action[:button_class] %> <%= action[:button_class] %><% end %>" href="<%= entity_action_link @entity, action[:action_path] %>"><%= action[:title] %></a>
+    <% @entity.entity_actions.each do |action| %>
+        <a class="btn btn-default<% if action[:button_class] %> <%= action[:button_class] %><% end %>" href="<%= entity_action_link @entity, action[:action] %>"><%= action[:title] %></a>
     <% end %>
 </div>
 <% end %>
 
-<h4><%= title_string @entity %></h4>
+<h4><%= entity_title_string @entity %></h4>
 
 <%= render_entity_properties @entity %>
+
+<%= form_tag({}, :id => 'entity-delete-form', :method => 'delete') do %>
+<% end %>

@@ -17,20 +17,39 @@
 //= require turbolinks
 //= require_tree .
 
-
-$(function() {
-    $('.download_link').on('click', function(e) {
+function ready() {
+    $('.download-button').on('click', function(e) {
         e.preventDefault();
 
-        $('#modal_spinner').modal();
+        $('#modal-spinner .spinner-text').text('Generating download...');
+        $('#modal-spinner').modal();
+
         $.fileDownload($(this).prop("href"), {
             successCallback: function (url) {
-                $('#modal_spinner').modal('hide');
+                $('#modal-spinner').modal('hide');
             },
             failCallback: function (url) {
-                $('#modal_spinner').modal('hide');
+                $('#modal-spinner').modal('hide');
                 alert("An error occured, and the file could not be downloaded. Please check VEDaspector’s logs.");
             }
         });
     });
-});
+
+    $('.delete-button').on('click', function(e) {
+        e.preventDefault();
+
+        $('#modal-confirm .confirm-text').text('This will delete the current record from VEDaspector. This cannot be undone.');
+        $('#modal-confirm').modal();
+
+        $('#modal-confirm .confirm-button').click(function() {
+            $('#modal-confirm').modal('hide');
+            $('#modal-spinner').modal();
+            $('#modal-spinner .spinner-text').text('Deleting...');
+
+            $('#entity-delete-form').submit();
+        });
+    });
+}
+
+$(document).ready(ready);
+$(document).on('page:load', ready);

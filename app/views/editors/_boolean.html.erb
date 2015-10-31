@@ -1,8 +1,8 @@
 <div class="form-group boolean">
     <label for="<%= prop.property_identifier %>">
-
         <span><%= prop.name %></span>:
 
-        <input name="entity[<%= prop.property_identifier %>]" type="checkbox" value="<% if prop.is_boolean_true %>1<%end%>">
+        <input name="entity[<%= prop.property_identifier %>]" type="hidden" value="0">
+        <input name="entity[<%= prop.property_identifier %>]" type="checkbox" <% if prop.value %>checked="checked"<%end%>>
     </label>
 </div>

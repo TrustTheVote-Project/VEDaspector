@@ -2,7 +2,7 @@
     <%= @title %>
 <% end %>
 
-<% if @show_welcome_message %>
+<% if @is_root_entity %>
 <div class="alert <% unless @entities.blank? %>alert-info<% else %>alert-warning<% end %> inline-block">
     <p>Welcome to VEDaspector, a tool for exploring election reports in the VSSC election data format.</p>
 
@@ -18,11 +18,17 @@
 
 <% unless @entities.blank? %>
 <h3><%= entity_type_title @entity_type, pluralize: true %></h3>
-<ul>
+<div class="list-group">
 <% @entities.each do |e| %>
-    <li><a href="<%= entity_view_link e %>"><%= title_string(e) %></a></li>
+    <a class="list-group-item" href="<%= entity_view_link e %>"><%= entity_title_string e %></a>
 <% end %>
-</ul>
+</div>
 <% else %>
 <h3>No <%= entity_type_title @entity_type, pluralize: true %> were found.</h3>
+<% end %>
+
+<% if @is_root_entity %>
+    <div>
+        <a class="btn btn-default" href="<%= entity_type_create_link @entity_type %>">Create new <%= entity_type_title @entity_type %></a>
+    </div>
 <% end %>
