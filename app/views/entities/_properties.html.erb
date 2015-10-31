@@ -11,7 +11,7 @@
 
 <% unless entities.blank? %>
     <% entities.each do |entity| %>
-        <% if entity.entity_present? %>
+        <% unless entity.value.nil? %>
             <h4><a href="<%= entity_view_link entity.value %>"><%= entity.name %></a></h4>
             <div class="panel panel-default">
                 <div class="panel-body">

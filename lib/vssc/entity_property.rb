@@ -1,18 +1,18 @@
 class Vssc::EntityProperty
 
-  attr_reader :entity
+  attr_reader :entity, :property_definition
 
-  def initialize(entity, property_name, property, value=nil)
+  def initialize(entity, property_definition, reference_name)
     @entity = entity
-    @property_name = property_name
-    @property = property
-    @value = value || @entity.send(@property[:method])
+    @property_definition = property_definition
+    @value = @entity.send(@property_definition[:method])
+    @reference_name = reference_name
   end
 
   # Returns Rails association for linked entity/collection.
   # Will return nil for value properties.
   def property_association
-    @entity.class.reflect_on_association @property[:method]
+    @entity.class.reflect_on_association @property_definition[:method]
   end
 
   # Returns inspector metadata for entity/collection linked by this property.
@@ -30,10 +30,8 @@ class Vssc::EntityProperty
     metadata = associated_class_metadata
     if metadata and metadata.has_key? :preferred_name
       metadata[:preferred_name]
-    elsif @property.has_key? :method
-      @property[:method].to_s.humanize.titlecase
     else
-      @property_name
+      @property_definition[:method].to_s.humanize.titlecase
     end
   end
 
@@ -53,7 +51,7 @@ class Vssc::EntityProperty
   end
 
   def property_identifier
-    @property[:method]
+    @property_definition[:method]
   end
 
   # Classifies property as a singular value, a link to another entity, or a
@@ -80,16 +78,8 @@ class Vssc::EntityProperty
     if metadata and metadata.has_key? :present_as_value
       metadata[:present_as_value][:type]
     else
-      @property[:type]
+      @property_definition[:type]
     end
-  end
-
-  def entity_present?
-    unless classify_property == :entity
-      raise "entity_present? should only be called on an entity"
-    end
-
-    not @value.nil?
   end
 
   def enum_values

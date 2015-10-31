@@ -30,18 +30,16 @@ module VsscEntity
     properties = []
 
     properties += elements.map do |name, element|
-      Vssc::EntityProperty.new(self, name, element)
+      Vssc::EntityProperty.new(self, element, name)
     end.compact
 
     properties += xml_attributes.map do |name, attribute|
-      Vssc::EntityProperty.new(self, name, attribute)
+      Vssc::EntityProperty.new(self, attribute, name)
     end.compact
 
     if self.class.text_node_method
-      text_value = send self.class.text_node_method
-      if text_value
-        properties << Vssc::EntityProperty.new(self, self.class.text_node_method.to_s, {}, text_value)
-      end
+      property_definition = { method: self.class.text_node_method, type: String }
+      properties << Vssc::EntityProperty.new(self, property_definition, self.class.text_node_method.to_sym)
     end
 
     properties
