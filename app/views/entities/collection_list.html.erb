@@ -6,10 +6,10 @@
 
 <br />
 
-<% unless @collection.value.blank? %>
+<% unless @collection.value.size == 0 %>
     <div>
         <div class="list-group">
-            <% @collection.value.slice((@current_page - 1) * @collection_page_size, @collection_page_size).each do |entity| %>
+            <% @collection.value.offset((@current_page - 1) * @collection_page_size).limit(@collection_page_size).each do |entity| %>
                 <a class="list-group-item" href="<%= entity_view_link entity %>">
                     <%= entity_title_string entity %>
                 </a>

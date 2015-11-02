@@ -39,9 +39,9 @@
 <% unless collections.blank? %>
     <% collections.each do |collection| %>
         <h4><a href="<%= collection_view_link collection %>"><%= collection.name %> (<%= collection.value.count %>)</a></h4>
-        <% unless collection.value.blank? %>
+        <% unless collection.value.size == 0 %>
             <div class="list-group">
-                <% collection.value.take(@linked_collection_page_size).each do |entity| %>
+                <% collection.value.limit(@linked_collection_page_size).each do |entity| %>
                     <a class="list-group-item" href="<%= entity_view_link entity %>"><%= entity_title_string entity %></a>
                 <% end %>
                 <% if collection.value.count > @linked_collection_page_size %>
