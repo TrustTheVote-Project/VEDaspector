@@ -1,0 +1,43 @@
+<% if page_count > 1 %>
+<nav>
+  <ul class="pagination">
+    <% if current_page == 1 %>
+    <li class="disabled">
+      <span aria-hidden="true" aria-label="Previous">&laquo;</span>
+    </li>    
+    <% else %>
+    <li>
+      <% if current_page == 2 %>
+        <a href="<%= base_url %>" aria-label="Previous">      
+      <% else %>
+        <a href="<%= base_url %>/<% current_page - 1 %>" aria-label="Previous">
+      <% end %>
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>    
+    <% end %>
+
+    <% (1..page_count).each do |i| %>      
+      <% if i == current_page %>
+      <li class="active"><span><%= i %></span></li>
+      <% else %>
+      <li><a href="<%= base_url %><% if i > 1 %>/<%= i %><% end %>"><%= i %></a></li>
+      <% end%>
+
+    <% end %>
+
+    <% if current_page == page_count %>
+    <li class="disabled">
+      <span aria-hidden="true" aria-label="Next">&raquo;</span>
+    </li>    
+    <% else %>
+    <li>
+      <a href="<%= base_url %>/<%= current_page + 1 %>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>    
+    <% end %>
+
+  </ul>
+</nav>
+<% end %>

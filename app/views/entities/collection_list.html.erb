@@ -9,7 +9,7 @@
 <% unless @collection.value.blank? %>
     <div>
         <div class="list-group">
-            <% @collection.value.take(@max_shown_collection_items).each do |entity| %>
+            <% @collection.value.slice((@current_page - 1) * @collection_page_size, @collection_page_size).each do |entity| %>
                 <a class="list-group-item" href="<%= entity_view_link entity %>">
                     <%= entity_title_string entity %>
                 </a>
@@ -23,6 +23,8 @@
       </div>
     </div>
 <% end %>
+
+<%= render_pagination_bar @base_collection_url, @collection.value.size, @current_page, @collection_page_size %>
 
 <div>
     <a class="btn btn-default" href="<%= collection_add_link @collection %>">Add <%= @collection.name.singularize %></a>

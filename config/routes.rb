@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   delete '/:entity_type/:entity_id', to: 'entities#delete'
 
   get '/:entity_type/:entity_id/collection/:collection', to: 'entities#collection_list'
+  get '/:entity_type/:entity_id/collection/:collection/:page_number', to: 'entities#collection_list'
   get '/:entity_type/:entity_id/collection/:collection/add', to: 'entities#collection_insert'
   post '/:entity_type/:entity_id/collection/:collection/add', to: 'entities#collection_insert_save'
 

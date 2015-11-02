@@ -2,10 +2,10 @@ class EntitiesController < ApplicationController
 
   def initialize
     super
-    @max_shown_collection_items = 10
-    @max_shown_subentity_properties = 10
+    @linked_entity_num_shown_properties = 10
 
     @collection_page_size = 30
+    @linked_collection_page_size = 10
   end
 
   ### Shared Methods
@@ -36,6 +36,13 @@ class EntitiesController < ApplicationController
   def assign_collection_property!
     collection_name = params[:collection]
     @collection = @entity.entity_property collection_name.to_sym
+    @base_collection_url = view_context.collection_view_link @collection
+    @current_page = (params[:page_number] || 1).to_i
+
+    if @current_page < 1 || @current_page > (@collection.value.size / @collection_page_size).ceil
+      return redirect_to @base_collection_url
+    end
+
     raise "Invalid collection '#{collection_name}' for #{@entity_type}" unless @collection
   end
 
@@ -106,8 +113,6 @@ class EntitiesController < ApplicationController
     assign_entity_type!
     assign_entity!
     assign_collection_property!
-
-    puts @collection
   end
 
   def collection_insert

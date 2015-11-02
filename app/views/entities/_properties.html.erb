@@ -16,13 +16,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <dl class="dl-horizontal">
-                        <% entity.child_value_properties.take(@max_shown_subentity_properties).each do |prop| %>
+                        <% entity.child_value_properties.take(@linked_entity_num_shown_properties).each do |prop| %>
                             <dt title="<%= prop.name %>"><%= prop.name %></dt>
                             <dd><%= prop.value %></dd>
                         <% end %>
-                        <% if entity.child_value_properties.size > @max_shown_subentity_properties %>
+                        <% if entity.child_value_properties.size > @linked_entity_num_shown_properties %>
                             <dt></dt>
-                            <dd><%= entity.child_value_properties.size - @max_shown_subentity_properties %> <%= entity.name %> properties omitted</dd>
+                            <dd><%= pluralize(entity.child_value_properties.size - @linked_entity_num_shown_properties, 'property') %> omitted</dd>
                         <% end %>
                     </dl>
                 </div>
@@ -41,12 +41,12 @@
         <h4><a href="<%= collection_view_link collection %>"><%= collection.name %> (<%= collection.value.count %>)</a></h4>
         <% unless collection.value.blank? %>
             <div class="list-group">
-                <% collection.value.take(@max_shown_collection_items).each do |entity| %>
+                <% collection.value.take(@linked_collection_page_size).each do |entity| %>
                     <a class="list-group-item" href="<%= entity_view_link entity %>"><%= entity_title_string entity %></a>
                 <% end %>
-                <% if collection.value.count > @max_shown_collection_items %>
+                <% if collection.value.count > @linked_collection_page_size %>
                     <a class="list-group-item" href="<%= collection_view_link collection %>">
-                        <%= collection.value.count - @max_shown_collection_items %> <%= entity_type_title collection.value_type, pluralize: true %> omitted
+                        <%= collection.value.count - @linked_collection_page_size %> <%= entity_type_title collection.value_type, pluralize: true %> omitted
                     </a>
                 <% end %>
             </div>
