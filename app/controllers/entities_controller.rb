@@ -66,10 +66,10 @@ class EntitiesController < ApplicationController
     @base_collection_url = view_context.collection_view_link @collection
     @current_page = (params[:page_number] || 1).to_i
 
-    total_pages = (@collection.value.size / @collection_page_size).ceil
-    total_pages = [1, total_pages].max
+    @page_count = (@collection.value.size.fdiv @collection_page_size).ceil
+    @page_count = [1, @page_count].max
 
-    if @current_page < 1 || @current_page > total_pages
+    if @current_page < 1 || @current_page > @page_count
       return redirect_to @base_collection_url
     end
 

@@ -24,7 +24,7 @@
     </div>
 <% end %>
 
-<%= render_pagination_bar @base_collection_url, @collection.value.size, @current_page, @collection_page_size %>
+<%= render partial: "shared/pagination", locals: { base_url: @base_collection_url, page_count: @page_count, current_page: @current_page } %>
 
 <div>
     <a class="btn btn-default" href="<%= collection_add_link @collection %>">Add <%= @collection.name.singularize %></a>
