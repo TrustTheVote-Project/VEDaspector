@@ -10,7 +10,7 @@
       <% if current_page == 2 %>
         <a href="<%= base_url %>" aria-label="Previous">      
       <% else %>
-        <a href="<%= base_url %>/<% current_page - 1 %>" aria-label="Previous">
+        <a href="<%= base_url %>/<%= current_page - 1 %>" aria-label="Previous">
       <% end %>
         <span aria-hidden="true">&laquo;</span>
       </a>
