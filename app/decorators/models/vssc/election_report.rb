@@ -1,7 +1,7 @@
 Vssc::ElectionReport.class_eval do
   include VsscEntity
 
-  entity_action :title => 'Download', :action => 'download-report', :button_class => 'download-button btn-success'
+  entity_action :title => 'Download', :action => 'download_report', :button_class => 'download-button btn-success'
 
   def download_report(controller)
     if election and election.name

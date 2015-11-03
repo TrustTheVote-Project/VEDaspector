@@ -1,0 +1,11 @@
+<div class="alert alert-info inline-block">
+    <p>You can upload election report XML files into VEDaspector for display and editing.</p>
+</div>
+
+
+<%= form_tag({action: :upload}, multipart: true) do %>
+    <p><%= file_field_tag 'entity' %></p>
+    <div>
+        <input class="btn btn-default" type="submit" value="Upload" />
+    </div>
+<% end %>

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get '/import', to: 'import#index'
+  post '/import', to: 'import#upload'
+
   get '/', to: 'entities#index'
   get '/:entity_type/', to: 'entities#list'
   get '/:entity_type/new', to: 'entities#create'
