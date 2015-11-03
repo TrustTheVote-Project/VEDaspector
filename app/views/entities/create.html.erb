@@ -1,0 +1,20 @@
+<% content_for :title do %>
+    Creating new <%= entity_type_title @entity_type %>
+<% end %>
+
+<%= form_tag entity_type_create_link(@entity_type) do %>
+
+    <h4>Create new <%= entity_type_title @entity_type %></h4>
+
+    <%= render_entity_editor_form @entity %>
+
+    <div class="entity-actions-bottom">
+        <%= link_to 'Cancel', :back, class: 'btn btn-default' %>
+        <button type="submit" class="btn btn-success">Create</button>
+    </div>
+
+    <% if @parent_entity %>
+        <input type="hidden" name="parent" value="<%= @parent_property.full_property_identifier %>" />
+    <% end %>
+
+<% end %>

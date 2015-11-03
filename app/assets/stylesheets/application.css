@@ -37,6 +37,10 @@
     margin-bottom: 2em;
 }
 
+.properties-group, .edit-properties-group {
+    margin: 2em 0em;
+}
+
 #modal-spinner, #modal-spinner .modal-dialog {
     width: 200px;
 }

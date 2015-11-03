@@ -2,13 +2,16 @@ module EntitiesHelper
 
   ### Display Helpers
 
+  # Returns plaintext description of entity's type for display.
+  # @return [String]
   def entity_type_title(entity_type, pluralize: false)
     entity_name = entity_type.name.demodulize
     entity_name = entity_name.pluralize if pluralize
     entity_name.underscore.split('_').join(' ').titleize
   end
 
-  # Returns plaintext string describing entity
+  # Returns plaintext description of entity for display.
+  # @return [String]
   def entity_title_string(entity)
     if entity.respond_to? :inspector_title_string
       entity.inspector_title_string
@@ -20,29 +23,30 @@ module EntitiesHelper
 
   ### Entity Links
 
-  def entity_type_create_link(entity_class)
-    entity_type = entity_class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/new"
+  def entity_type_create_link(entity_class, parent_property: nil)
+    if parent_property
+      "/#{entity_class.entity_type_identifier}/new?parent=#{parent_property.full_property_identifier}"
+    else
+      "/#{entity_class.entity_type_identifier}/new"
+    end
   end
 
   def entity_view_link(entity)
-    entity_type = entity.class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/#{entity.id}"
+    "/#{entity.entity_type_identifier}/#{entity.id}"
   end
 
   def entity_action_link(entity, action)
-    entity_type = entity.class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/#{entity.id}/#{action}"
+    "/#{entity.entity_type_identifier}/#{entity.id}/#{action}"
   end
 
   def collection_view_link(collection)
-    entity_type = collection.entity.class.name.demodulize.pluralize.underscore
+    entity_type = collection.entity.entity_type_identifier
     "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}"
   end
 
   def collection_add_link(collection)
-    entity_type = collection.entity.class.name.demodulize.pluralize.underscore
-    "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}/add"
+    entity_type = collection.entity.entity_type_identifier
+    "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}/new"
   end
 
   ### Rendering
@@ -54,7 +58,7 @@ module EntitiesHelper
     locals = {
       entity: entity,
       values: grouped_properties[:value],
-      entities: grouped_properties[:entity],
+      child_entities: grouped_properties[:entity],
       collections: grouped_properties[:collection]
     }
 
@@ -68,7 +72,7 @@ module EntitiesHelper
     locals = {
       entity: entity,
       values: grouped_properties[:value],
-      entities: grouped_properties[:entity],
+      child_entities: grouped_properties[:entity],
       collections: grouped_properties[:collection]
     }
 

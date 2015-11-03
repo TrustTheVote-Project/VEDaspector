@@ -30,7 +30,34 @@ class EntitiesController < ApplicationController
   def assign_entity!
     entity_id = params[:entity_id]
     @entity = @entity_type.find(entity_id)
+    @parent_entity = nil
     raise "Invalid entity: #{entity_id}" unless @entity
+  end
+
+  # Validates and assigns parent entity, and parent property instance variables.
+  # @raise [Exception] on validation error
+  def assign_parent_entity!
+    parent_comps = params[:parent].split('-')
+    raise "Invalid parent parameter #{params[:parent]}" unless parent_comps.size == 3
+    input_parent_type, parent_id, property_name = parent_comps
+
+    parent_type = lookup_entity_type input_parent_type
+    raise "Invalid parent entity type: #{input_parent_type}" unless parent_type
+
+    @parent_entity = parent_type.find parent_id
+    raise "Invalid parent entity: #{parent_id}" unless @parent_entity
+
+    @parent_property = @parent_entity.entity_property property_name
+    raise "Invalid parent property: #{property_name}" unless @parent_property
+  end
+
+  def assign_new_entity!
+    @entity = @entity_type.new
+    if params.has_key? :parent
+      assign_parent_entity!
+    else
+      @parent_entity = nil
+    end
   end
 
   def assign_collection_property!
@@ -39,7 +66,10 @@ class EntitiesController < ApplicationController
     @base_collection_url = view_context.collection_view_link @collection
     @current_page = (params[:page_number] || 1).to_i
 
-    if @current_page < 1 || @current_page > (@collection.value.size / @collection_page_size).ceil
+    total_pages = (@collection.value.size / @collection_page_size).ceil
+    total_pages = [1, total_pages].max
+
+    if @current_page < 1 || @current_page > total_pages
       return redirect_to @base_collection_url
     end
 
@@ -59,19 +89,16 @@ class EntitiesController < ApplicationController
     @entities = @entity_type.all
   end
 
-  def create
-    render text: "TODO"
-  end
-
-  def save
-    render text: "TODO"
-  end
-
   ### Entity Actions
 
   def show
     assign_entity_type!
     assign_entity!
+  end
+
+  def create
+    assign_entity_type!
+    assign_new_entity!
   end
 
   def edit
@@ -81,9 +108,13 @@ class EntitiesController < ApplicationController
 
   def update
     assign_entity_type!
-    assign_entity!
+    if params.has_key? :entity_id
+      assign_entity!
+    else
+      assign_new_entity!
+    end
 
-    @entity.update_entity(params[:entity])
+    @entity.update_and_save! params[:entity], parent_property: @parent_property
     redirect_to view_context.entity_view_link(@entity)
   end
 

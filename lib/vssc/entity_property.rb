@@ -6,7 +6,13 @@ class Vssc::EntityProperty
     @entity = entity
     @property_definition = property_definition
     @reference_name = reference_name
-    @value = @entity.send(@property_definition[:method])
+
+    method_name = @property_definition[:method]
+    if @entity.respond_to? method_name
+      @value = @entity.send method_name
+    else
+      Rails.logger.warn "Warning: #{entity} doesn't implement #{method_name}: for property '#{reference_name}'"
+    end
   end
 
   # THe Rails association for the linked entity or collection if one exists.
@@ -47,16 +53,32 @@ class Vssc::EntityProperty
         []
       end
     elsif metadata and metadata[:present_as_value]
-      @value.send metadata[:present_as_value][:get]
+      unless @value.nil?
+        @value.send metadata[:present_as_value][:get]
+      else
+        nil
+      end
     else
       @value
     end
   end
 
-  # A stable identifier for this property.
+  def value=(value)
+    method_name = "#{@property_definition[:method]}=".to_sym
+    @entity.send(method_name, value)
+  end
+
+  # The method name of the property.
   # @return [Symbol]
   def property_identifier
     @property_definition[:method]
+  end
+
+  # A complete identifier for this property including the parent's type,
+  # the parent's id, and the name of the property.
+  # @return [String]
+  def full_property_identifier
+    "#{@entity.entity_type_identifier}-#{@entity.id}-#{property_identifier}"
   end
 
   # Classifies property as a singular value, a link to another entity, or a

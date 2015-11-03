@@ -1,5 +1,5 @@
 <% unless values.blank? %>
-<div>
+<div class="properties-group">
     <dl class="dl-horizontal">
     <% values.each do |prop| %>
         <dt title="<%= prop.name %>"><%= prop.name %></dt>
@@ -9,51 +9,55 @@
 </div>
 <% end %>
 
-<% unless entities.blank? %>
-    <% entities.each do |entity| %>
-        <% unless entity.value.nil? %>
-            <h4><a href="<%= entity_view_link entity.value %>"><%= entity.name %></a></h4>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <dl class="dl-horizontal">
-                        <% entity.child_value_properties.take(@linked_entity_num_shown_properties).each do |prop| %>
-                            <dt title="<%= prop.name %>"><%= prop.name %></dt>
-                            <dd><%= prop.value %></dd>
-                        <% end %>
-                        <% if entity.child_value_properties.size > @linked_entity_num_shown_properties %>
-                            <dt></dt>
-                            <dd><%= pluralize(entity.child_value_properties.size - @linked_entity_num_shown_properties, 'property') %> omitted</dd>
-                        <% end %>
-                    </dl>
+<% unless child_entities.blank? %>
+    <% child_entities.each do |child_entity| %>
+        <div class="properties-group">
+            <% unless child_entity.value.nil? %>
+                <h4><a href="<%= entity_view_link child_entity.value %>"><%= child_entity.name %></a></h4>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <dl class="dl-horizontal">
+                            <% child_entity.child_value_properties.take(@linked_entity_num_shown_properties).each do |prop| %>
+                                <dt title="<%= prop.name %>"><%= prop.name %></dt>
+                                <dd><%= prop.value %></dd>
+                            <% end %>
+                            <% if child_entity.child_value_properties.size > @linked_entity_num_shown_properties %>
+                                <dt></dt>
+                                <dd><%= pluralize(child_entity.child_value_properties.size - @linked_entity_num_shown_properties, 'property') %> omitted</dd>
+                            <% end %>
+                        </dl>
+                    </div>
                 </div>
-            </div>
-        <% else %>
-            <h4><%= entity.name %> (Missing)</h4>
-            <div class="list-group">
-                <a class="list-group-item" href="#">Add <%= entity.name %></a>
-            </div>
-        <% end %>
+            <% else %>
+                <h4>No <%= child_entity.name %> (Missing)</h4>
+                <div class="list-group">
+                    <a class="list-group-item" href="<%= entity_type_create_link child_entity.value_type, parent_property: child_entity %>">Add <%= child_entity.name %></a>
+                </div>
+            <% end %>
+        </div>
     <% end %>
 <% end %>
 
 <% unless collections.blank? %>
     <% collections.each do |collection| %>
-        <h4><a href="<%= collection_view_link collection %>"><%= collection.name %> (<%= collection.value.count %>)</a></h4>
-        <% unless collection.value.size == 0 %>
-            <div class="list-group">
-                <% collection.value.limit(@linked_collection_page_size).each do |entity| %>
-                    <a class="list-group-item" href="<%= entity_view_link entity %>"><%= entity_title_string entity %></a>
-                <% end %>
-                <% if collection.value.count > @linked_collection_page_size %>
-                    <a class="list-group-item" href="<%= collection_view_link collection %>">
-                        <%= collection.value.count - @linked_collection_page_size %> <%= entity_type_title collection.value_type, pluralize: true %> omitted
-                    </a>
-                <% end %>
-            </div>
-        <% else %>
-            <div class="list-group">
-                <a class="list-group-item" href="<%= collection_add_link collection %>">Add <%= collection.name.singularize %></a>
-            </div>
-        <% end %>
+        <div class="properties-group">
+            <h4><a href="<%= collection_view_link collection %>"><%= collection.name %> (<%= collection.value.count %>)</a></h4>
+            <% unless collection.value.size == 0 %>
+                <div class="list-group">
+                    <% collection.value.limit(@linked_collection_page_size).each do |entity| %>
+                        <a class="list-group-item" href="<%= entity_view_link entity %>"><%= entity_title_string entity %></a>
+                    <% end %>
+                    <% if collection.value.count > @linked_collection_page_size %>
+                        <a class="list-group-item" href="<%= collection_view_link collection %>">
+                            <%= collection.value.count - @linked_collection_page_size %> <%= entity_type_title collection.value_type, pluralize: true %> omitted
+                        </a>
+                    <% end %>
+                </div>
+            <% else %>
+                <div class="list-group">
+                    <a class="list-group-item" href="<%= collection_add_link collection %>">Add <%= collection.name.singularize %></a>
+                </div>
+            <% end %>
+        </div>
     <% end %>
 <% end %>
