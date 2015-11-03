@@ -2,6 +2,10 @@ class Vssc::EntityProperty
 
   attr_reader :entity, :property_definition, :reference_name
 
+  # @param [VsscEntity] the object the property is defined on
+  # @param [Hash] the property definition taken from VEDaStore's VsscFunctions
+  # @param [String] the name of the property on the entity. may not match the
+  #                 property's method name.
   def initialize(entity, property_definition, reference_name)
     @entity = entity
     @property_definition = property_definition
@@ -63,9 +67,33 @@ class Vssc::EntityProperty
     end
   end
 
+  # @param [Any] the value to add
   def value=(value)
     method_name = "#{@property_definition[:method]}=".to_sym
     @entity.send(method_name, value)
+    @value = value
+  end
+
+
+  # @param [Any] the value to append.
+  # @raise [Exception] if property is not a collection.
+  def append_value(value)
+    unless collection?
+      raise "#{self}: append_value can only be called on a collection, not on a #{classify_property}"
+    end
+
+    # TODO: should handle serialize as Array cases
+
+    if present_as_collection?
+      metadata = associated_class_metadata
+      if @value.nil?
+        self.value = property_association.klass.new
+      end
+      backing_collection = @value.send metadata[:present_as_collection][:get]
+      backing_collection << value
+    else
+      @entity.send(@property_definition[:method]) << value
+    end
   end
 
   # The method name of the property.
@@ -97,11 +125,38 @@ class Vssc::EntityProperty
     end
   end
 
+  # @return [Boolean] is property a simple, inline value
+  def value?
+    classify_property == :value
+  end
+
+  # @return [Boolean] is property a linked entity
+  def entity?
+    classify_property == :entity
+  end
+
+  # @return [Boolean] is property a collection
+  def collection?
+    classify_property == :collection
+  end
+
+  # Returns whether property links to a 'passthrough' entity, aka a facade for a
+  # backing collection property.
+  # @return [Boolean]
+  def present_as_collection?
+    metadata = associated_class_metadata
+    metadata and metadata.has_key? :present_as_collection
+  end
+
   # @return [Class, String] The type of this property's value.
   def value_type
     metadata = associated_class_metadata
     if metadata and metadata.has_key? :present_as_value
       metadata[:present_as_value][:type]
+    elsif present_as_collection?
+      backing_collection_method = metadata[:present_as_collection][:get]
+      backing_association = property_association.klass.reflect_on_association backing_collection_method
+      backing_association.klass
     else
       @property_definition[:type]
     end

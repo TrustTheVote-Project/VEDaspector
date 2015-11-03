@@ -90,7 +90,12 @@ module VsscEntity
     self.save!
 
     if parent_property
-      parent_property.value = self
+      if parent_property.collection?
+        parent_property.append_value self
+      else
+        parent_property.value = self
+      end
+
       parent_property.entity.save!
     end
   end

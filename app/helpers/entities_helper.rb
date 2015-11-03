@@ -45,8 +45,7 @@ module EntitiesHelper
   end
 
   def collection_add_link(collection)
-    entity_type = collection.entity.entity_type_identifier
-    "/#{entity_type}/#{collection.entity.id}/collection/#{collection.property_identifier}/new"
+    entity_type_create_link collection.value_type, parent_property: collection
   end
 
   ### Rendering
