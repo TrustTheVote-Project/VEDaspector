@@ -4,15 +4,13 @@
 
 <% if @is_root_entity %>
 <div class="alert <% unless @entities.blank? %>alert-info<% else %>alert-warning<% end %> inline-block">
-    <p>Welcome to VEDaspector, a tool for exploring election reports in the VSSC election data format.</p>
+    <p>Welcome to VEDaspector, a tool for exploring election reports in the <a href="http://www.nist.gov/itl/vote/ieee-swg-p1622.cfm">NIST Election Results Reporting data format</a>.</p>
 
     <% unless @entities.blank? %>
     <p>To get started, select one of the loaded Election Reports below.</p>
     <% else %>
     <p>No Election Reports have been loaded into VEDaspector. Please see the <a class="alert-link" href="https://github.com/TrustTheVote-Project/VEDaspector/blob/master/README.md">README file</a> for instructions on how to get started.</p>
     <% end %>
-
-    <p>TODO: include link to standard.</p>
 </div>
 <% end %>
 

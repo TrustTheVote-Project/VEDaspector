@@ -11,30 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015233467) do
+ActiveRecord::Schema.define(version: 20151104230856) do
 
-  create_table "vssc_ballot_selection_candidate_id_refs", force: :cascade do |t|
+  create_table "vedastore_ballot_selection_candidate_id_refs", force: :cascade do |t|
     t.integer "ballot_selection_id"
     t.string  "candidate_id_ref"
   end
 
-  add_index "vssc_ballot_selection_candidate_id_refs", ["ballot_selection_id", "candidate_id_ref"], name: "vssc_candidate_selection_candidates"
+  add_index "vedastore_ballot_selection_candidate_id_refs", ["ballot_selection_id", "candidate_id_ref"], name: "vedastore_candidate_selection_candidates"
 
-  create_table "vssc_ballot_selection_endorsement_party_id_refs", force: :cascade do |t|
+  create_table "vedastore_ballot_selection_endorsement_party_id_refs", force: :cascade do |t|
     t.integer "ballot_selection_id"
     t.string  "party_id_ref"
   end
 
-  add_index "vssc_ballot_selection_endorsement_party_id_refs", ["ballot_selection_id", "party_id_ref"], name: "vssc_candidate_selection_parties"
+  add_index "vedastore_ballot_selection_endorsement_party_id_refs", ["ballot_selection_id", "party_id_ref"], name: "vedastore_candidate_selection_parties"
 
-  create_table "vssc_ballot_selection_party_id_refs", force: :cascade do |t|
+  create_table "vedastore_ballot_selection_party_id_refs", force: :cascade do |t|
     t.integer "ballot_selection_id"
     t.string  "party_id_ref"
   end
 
-  add_index "vssc_ballot_selection_party_id_refs", ["ballot_selection_id", "party_id_ref"], name: "vssc_party_selection_parties"
+  add_index "vedastore_ballot_selection_party_id_refs", ["ballot_selection_id", "party_id_ref"], name: "vedastore_party_selection_parties"
 
-  create_table "vssc_ballot_selections", force: :cascade do |t|
+  create_table "vedastore_ballot_selections", force: :cascade do |t|
     t.integer  "contest_id"
     t.integer  "sequence_order"
     t.string   "type"
@@ -45,25 +45,25 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.boolean  "is_write_in"
   end
 
-  add_index "vssc_ballot_selections", ["contest_id"], name: "vssc_ballot_selection_contest"
-  add_index "vssc_ballot_selections", ["object_id"], name: "vssc_ballot_selection_object_id"
-  add_index "vssc_ballot_selections", ["selection_id"], name: "vssc_ballot_measure_selections"
+  add_index "vedastore_ballot_selections", ["contest_id"], name: "vedastore_ballot_selection_contest"
+  add_index "vedastore_ballot_selections", ["object_id"], name: "vedastore_ballot_selection_object_id"
+  add_index "vedastore_ballot_selections", ["selection_id"], name: "vedastore_ballot_measure_selections"
 
-  create_table "vssc_ballot_style_gp_unit_id_refs", force: :cascade do |t|
+  create_table "vedastore_ballot_style_gp_unit_id_refs", force: :cascade do |t|
     t.integer "ballot_style_id"
     t.string  "gp_unit_id_ref"
   end
 
-  add_index "vssc_ballot_style_gp_unit_id_refs", ["gp_unit_id_ref", "ballot_style_id"], name: "vssc_ballot_style_gp_units"
+  add_index "vedastore_ballot_style_gp_unit_id_refs", ["gp_unit_id_ref", "ballot_style_id"], name: "vedastore_ballot_style_gp_units"
 
-  create_table "vssc_ballot_style_party_id_refs", force: :cascade do |t|
+  create_table "vedastore_ballot_style_party_id_refs", force: :cascade do |t|
     t.integer "ballot_style_id"
     t.string  "party_id_ref"
   end
 
-  add_index "vssc_ballot_style_party_id_refs", ["party_id_ref", "ballot_style_id"], name: "vssc_ballot_style_parties"
+  add_index "vedastore_ballot_style_party_id_refs", ["party_id_ref", "ballot_style_id"], name: "vedastore_ballot_style_parties"
 
-  create_table "vssc_ballot_styles", force: :cascade do |t|
+  create_table "vedastore_ballot_styles", force: :cascade do |t|
     t.integer  "election_id"
     t.string   "image_uri"
     t.string   "object_id"
@@ -71,9 +71,9 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "vssc_ballot_styles", ["election_id"], name: "vssc_ballot_style_election"
+  add_index "vedastore_ballot_styles", ["election_id"], name: "vedastore_ballot_style_election"
 
-  create_table "vssc_candidates", force: :cascade do |t|
+  create_table "vedastore_candidates", force: :cascade do |t|
     t.integer  "election_id"
     t.integer  "ballot_name_id"
     t.string   "party_identifier"
@@ -88,11 +88,11 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",           null: false
   end
 
-  add_index "vssc_candidates", ["ballot_name_id"], name: "vssc_candidate_ballot_name"
-  add_index "vssc_candidates", ["election_id"], name: "vssc_candidate_election"
-  add_index "vssc_candidates", ["object_id"], name: "vssc_candidate_object_id"
+  add_index "vedastore_candidates", ["ballot_name_id"], name: "vedastore_candidate_ballot_name"
+  add_index "vedastore_candidates", ["election_id"], name: "vedastore_candidate_election"
+  add_index "vedastore_candidates", ["object_id"], name: "vedastore_candidate_object_id"
 
-  create_table "vssc_contact_informations", force: :cascade do |t|
+  create_table "vedastore_contact_informations", force: :cascade do |t|
     t.integer  "contactable_id"
     t.string   "contactable_type"
     t.text     "address_line"
@@ -105,16 +105,16 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",       null: false
   end
 
-  add_index "vssc_contact_informations", ["contactable_id", "contactable_type"], name: "vssc_contactable"
+  add_index "vedastore_contact_informations", ["contactable_id", "contactable_type"], name: "vedastore_contactable"
 
-  create_table "vssc_contest_office_id_refs", force: :cascade do |t|
+  create_table "vedastore_contest_office_id_refs", force: :cascade do |t|
     t.integer "contest_id"
     t.string  "office_id_ref"
   end
 
-  add_index "vssc_contest_office_id_refs", ["contest_id", "office_id_ref"], name: "vssc_contest_offices"
+  add_index "vedastore_contest_office_id_refs", ["contest_id", "office_id_ref"], name: "vedastore_contest_offices"
 
-  create_table "vssc_contests", force: :cascade do |t|
+  create_table "vedastore_contests", force: :cascade do |t|
     t.string   "type"
     t.integer  "election_id"
     t.integer  "ballot_sub_title_id"
@@ -146,21 +146,21 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.string   "office_identifier"
   end
 
-  add_index "vssc_contests", ["ballot_sub_title_id"], name: "vssc_contest_ballot_sub_title"
-  add_index "vssc_contests", ["ballot_title_id"], name: "vssc_contest_ballot_title"
-  add_index "vssc_contests", ["candidate_identifier"], name: "vssc_ret_con_candidate"
-  add_index "vssc_contests", ["con_statement_id"], name: "vssc_ballot_measure_con_statement"
-  add_index "vssc_contests", ["effect_of_abstain_id"], name: "vssc_ballot_measure_effect_of_abstain"
-  add_index "vssc_contests", ["election_id"], name: "vssc_contest_election"
-  add_index "vssc_contests", ["full_text_id"], name: "vssc_ballot_measure_full_text"
-  add_index "vssc_contests", ["object_id"], name: "vssc_contest_object_id"
-  add_index "vssc_contests", ["office_identifier"], name: "vssc_ret_con_office"
-  add_index "vssc_contests", ["passage_threshold_id"], name: "vssc_ballot_measure_passage_threshold"
-  add_index "vssc_contests", ["primary_party_identifier"], name: "vssc_can_con_primary_party"
-  add_index "vssc_contests", ["pro_statement_id"], name: "vssc_ballot_measure_pro_statement"
-  add_index "vssc_contests", ["summary_text_id"], name: "vssc_ballot_measure_summary_text"
+  add_index "vedastore_contests", ["ballot_sub_title_id"], name: "vedastore_contest_ballot_sub_title"
+  add_index "vedastore_contests", ["ballot_title_id"], name: "vedastore_contest_ballot_title"
+  add_index "vedastore_contests", ["candidate_identifier"], name: "vedastore_ret_con_candidate"
+  add_index "vedastore_contests", ["con_statement_id"], name: "vedastore_ballot_measure_con_statement"
+  add_index "vedastore_contests", ["effect_of_abstain_id"], name: "vedastore_ballot_measure_effect_of_abstain"
+  add_index "vedastore_contests", ["election_id"], name: "vedastore_contest_election"
+  add_index "vedastore_contests", ["full_text_id"], name: "vedastore_ballot_measure_full_text"
+  add_index "vedastore_contests", ["object_id"], name: "vedastore_contest_object_id"
+  add_index "vedastore_contests", ["office_identifier"], name: "vedastore_ret_con_office"
+  add_index "vedastore_contests", ["passage_threshold_id"], name: "vedastore_ballot_measure_passage_threshold"
+  add_index "vedastore_contests", ["primary_party_identifier"], name: "vedastore_can_con_primary_party"
+  add_index "vedastore_contests", ["pro_statement_id"], name: "vedastore_ballot_measure_pro_statement"
+  add_index "vedastore_contests", ["summary_text_id"], name: "vedastore_ballot_measure_summary_text"
 
-  create_table "vssc_count_statuses", force: :cascade do |t|
+  create_table "vedastore_count_statuses", force: :cascade do |t|
     t.integer  "count_statusable_id"
     t.string   "count_statusable_type"
     t.string   "other_type"
@@ -170,9 +170,9 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",            null: false
   end
 
-  add_index "vssc_count_statuses", ["count_statusable_id", "count_statusable_type"], name: "vssc_count_statusable"
+  add_index "vedastore_count_statuses", ["count_statusable_id", "count_statusable_type"], name: "vedastore_count_statusable"
 
-  create_table "vssc_counts", force: :cascade do |t|
+  create_table "vedastore_counts", force: :cascade do |t|
     t.string   "type"
     t.integer  "countable_id"
     t.string   "countable_type"
@@ -194,13 +194,13 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.float    "count"
   end
 
-  add_index "vssc_counts", ["countable_id", "countable_type"], name: "vssc_countable"
-  add_index "vssc_counts", ["device_id"], name: "vssc_counts_device"
-  add_index "vssc_counts", ["gp_unit_identifier"], name: "vssc_counts_gp_unit"
-  add_index "vssc_counts", ["summary_countable_id", "summary_countable_type"], name: "vssc_counts_summary_countable"
-  add_index "vssc_counts", ["type"], name: "vssc_counts_type"
+  add_index "vedastore_counts", ["countable_id", "countable_type"], name: "vedastore_countable"
+  add_index "vedastore_counts", ["device_id"], name: "vedastore_counts_device"
+  add_index "vedastore_counts", ["gp_unit_identifier"], name: "vedastore_counts_gp_unit"
+  add_index "vedastore_counts", ["summary_countable_id", "summary_countable_type"], name: "vedastore_counts_summary_countable"
+  add_index "vedastore_counts", ["type"], name: "vedastore_counts_type"
 
-  create_table "vssc_devices", force: :cascade do |t|
+  create_table "vedastore_devices", force: :cascade do |t|
     t.string   "manufacturer"
     t.string   "model"
     t.string   "device_type"
@@ -208,23 +208,23 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",   null: false
   end
 
-  create_table "vssc_election_administration_official_id_refs", force: :cascade do |t|
+  create_table "vedastore_election_administration_official_id_refs", force: :cascade do |t|
     t.integer "election_administration_id"
     t.string  "election_official_id_ref"
   end
 
-  add_index "vssc_election_administration_official_id_refs", ["election_administration_id", "election_official_id_ref"], name: "vssc_election_admin_official_ref"
+  add_index "vedastore_election_administration_official_id_refs", ["election_administration_id", "election_official_id_ref"], name: "vedastore_election_admin_official_ref"
 
-  create_table "vssc_election_administrations", force: :cascade do |t|
+  create_table "vedastore_election_administrations", force: :cascade do |t|
     t.integer  "contact_information_id"
     t.string   "name"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
 
-  add_index "vssc_election_administrations", ["contact_information_id"], name: "vssc_election_admin_contact_information"
+  add_index "vedastore_election_administrations", ["contact_information_id"], name: "vedastore_election_admin_contact_information"
 
-  create_table "vssc_election_reports", force: :cascade do |t|
+  create_table "vedastore_election_reports", force: :cascade do |t|
     t.integer  "election_id"
     t.text     "notes"
     t.string   "format"
@@ -241,9 +241,9 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                    null: false
   end
 
-  add_index "vssc_election_reports", ["election_id"], name: "vssc_election_reports_election"
+  add_index "vedastore_election_reports", ["election_id"], name: "vedastore_election_reports_election"
 
-  create_table "vssc_elections", force: :cascade do |t|
+  create_table "vedastore_elections", force: :cascade do |t|
     t.integer  "contact_information_id"
     t.string   "election_scope_identifier"
     t.integer  "name_id"
@@ -254,11 +254,11 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                null: false
   end
 
-  add_index "vssc_elections", ["contact_information_id"], name: "vssc_election_contact_information"
-  add_index "vssc_elections", ["election_scope_identifier"], name: "vssc_elections_gp_scope"
-  add_index "vssc_elections", ["name_id"], name: "vssc_elections_name"
+  add_index "vedastore_elections", ["contact_information_id"], name: "vedastore_election_contact_information"
+  add_index "vedastore_elections", ["election_scope_identifier"], name: "vedastore_elections_gp_scope"
+  add_index "vedastore_elections", ["name_id"], name: "vedastore_elections_name"
 
-  create_table "vssc_external_identifier_collections", force: :cascade do |t|
+  create_table "vedastore_external_identifier_collections", force: :cascade do |t|
     t.string   "identifiable_type"
     t.integer  "identifiable_id"
     t.string   "label"
@@ -266,9 +266,9 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",        null: false
   end
 
-  add_index "vssc_external_identifier_collections", ["identifiable_type", "identifiable_id"], name: "vssc_identifiable"
+  add_index "vedastore_external_identifier_collections", ["identifiable_type", "identifiable_id"], name: "vedastore_identifiable"
 
-  create_table "vssc_external_identifiers", force: :cascade do |t|
+  create_table "vedastore_external_identifiers", force: :cascade do |t|
     t.integer  "external_identifier_collection_id"
     t.string   "identifier_type"
     t.string   "other_type"
@@ -278,21 +278,21 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                        null: false
   end
 
-  create_table "vssc_gp_unit_authority_id_refs", force: :cascade do |t|
+  create_table "vedastore_gp_unit_authority_id_refs", force: :cascade do |t|
     t.integer "gp_unit_id"
     t.string  "authority_id_ref"
   end
 
-  add_index "vssc_gp_unit_authority_id_refs", ["gp_unit_id", "authority_id_ref"], name: "vssc_gp_unit_authorities"
+  add_index "vedastore_gp_unit_authority_id_refs", ["gp_unit_id", "authority_id_ref"], name: "vedastore_gp_unit_authorities"
 
-  create_table "vssc_gp_unit_composing_gp_unit_id_refs", force: :cascade do |t|
+  create_table "vedastore_gp_unit_composing_gp_unit_id_refs", force: :cascade do |t|
     t.integer "gp_unit_id"
     t.string  "composing_gp_unit_id_ref"
   end
 
-  add_index "vssc_gp_unit_composing_gp_unit_id_refs", ["gp_unit_id", "composing_gp_unit_id_ref"], name: "vssc_gp_unit_composing_units"
+  add_index "vedastore_gp_unit_composing_gp_unit_id_refs", ["gp_unit_id", "composing_gp_unit_id_ref"], name: "vedastore_gp_unit_composing_units"
 
-  create_table "vssc_gp_units", force: :cascade do |t|
+  create_table "vedastore_gp_units", force: :cascade do |t|
     t.string   "type"
     t.integer  "election_report_id"
     t.string   "object_id"
@@ -316,13 +316,13 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.integer  "voters_registered"
   end
 
-  add_index "vssc_gp_units", ["contact_information_id"], name: "vssc_gp_unit_contact_info"
-  add_index "vssc_gp_units", ["election_report_id"], name: "vscc_gp_unit_election_report"
-  add_index "vssc_gp_units", ["object_id"], name: "vssc_gp_unit_object_id"
-  add_index "vssc_gp_units", ["spatial_dimension_id"], name: "vssc_gp_unit_spatial_dimension"
-  add_index "vssc_gp_units", ["type"], name: "vssc_gp_unit_type"
+  add_index "vedastore_gp_units", ["contact_information_id"], name: "vedastore_gp_unit_contact_info"
+  add_index "vedastore_gp_units", ["election_report_id"], name: "vscc_gp_unit_election_report"
+  add_index "vedastore_gp_units", ["object_id"], name: "vedastore_gp_unit_object_id"
+  add_index "vedastore_gp_units", ["spatial_dimension_id"], name: "vedastore_gp_unit_spatial_dimension"
+  add_index "vedastore_gp_units", ["type"], name: "vedastore_gp_unit_type"
 
-  create_table "vssc_hours", force: :cascade do |t|
+  create_table "vedastore_hours", force: :cascade do |t|
     t.integer  "hourable_id"
     t.string   "hourable_type"
     t.string   "day"
@@ -333,15 +333,15 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "vssc_hours", ["hourable_id", "hourable_type"], name: "vssc_hourable"
+  add_index "vedastore_hours", ["hourable_id", "hourable_type"], name: "vedastore_hourable"
 
-  create_table "vssc_internationalized_texts", force: :cascade do |t|
+  create_table "vedastore_internationalized_texts", force: :cascade do |t|
     t.string   "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "vssc_language_strings", force: :cascade do |t|
+  create_table "vedastore_language_strings", force: :cascade do |t|
     t.integer  "internationalized_text_id"
     t.string   "language"
     t.text     "text"
@@ -349,16 +349,16 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                null: false
   end
 
-  add_index "vssc_language_strings", ["internationalized_text_id"], name: "vssc_language_string_internationalized_text"
+  add_index "vedastore_language_strings", ["internationalized_text_id"], name: "vedastore_language_string_internationalized_text"
 
-  create_table "vssc_office_group_office_ids", force: :cascade do |t|
+  create_table "vedastore_office_group_office_ids", force: :cascade do |t|
     t.integer "office_id"
     t.string  "office_id_ref"
   end
 
-  add_index "vssc_office_group_office_ids", ["office_id", "office_id_ref"], name: "vssc_office_group_office_refs"
+  add_index "vedastore_office_group_office_ids", ["office_id", "office_id_ref"], name: "vedastore_office_group_office_refs"
 
-  create_table "vssc_office_groups", force: :cascade do |t|
+  create_table "vedastore_office_groups", force: :cascade do |t|
     t.integer  "office_groupable_id"
     t.string   "office_groupable_type"
     t.string   "name"
@@ -367,16 +367,16 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",            null: false
   end
 
-  add_index "vssc_office_groups", ["office_groupable_id", "office_groupable_type"], name: "vssc_office_groupable"
+  add_index "vedastore_office_groups", ["office_groupable_id", "office_groupable_type"], name: "vedastore_office_groupable"
 
-  create_table "vssc_office_office_holder_id_refs", force: :cascade do |t|
+  create_table "vedastore_office_office_holder_id_refs", force: :cascade do |t|
     t.integer "office_id"
     t.string  "office_holder_id_ref"
   end
 
-  add_index "vssc_office_office_holder_id_refs", ["office_id", "office_holder_id_ref"], name: "vssc_office_office_holder_ref"
+  add_index "vedastore_office_office_holder_id_refs", ["office_id", "office_holder_id_ref"], name: "vedastore_office_office_holder_ref"
 
-  create_table "vssc_offices", force: :cascade do |t|
+  create_table "vedastore_offices", force: :cascade do |t|
     t.integer  "office_group_id"
     t.integer  "election_report_id"
     t.integer  "contact_information_id"
@@ -390,32 +390,32 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                    null: false
   end
 
-  add_index "vssc_offices", ["contact_information_id"], name: "vssc_office_contact_information"
-  add_index "vssc_offices", ["election_report_id"], name: "vssc_office_election_report"
-  add_index "vssc_offices", ["electoral_district_identifier"], name: "vssc_office_jurisdiction_scope"
-  add_index "vssc_offices", ["name_id"], name: "vssc_office_name"
-  add_index "vssc_offices", ["object_id"], name: "vssc_office_object_id"
-  add_index "vssc_offices", ["office_group_id"], name: "vssc_office_office_group"
-  add_index "vssc_offices", ["term_id"], name: "vssc_office_term"
+  add_index "vedastore_offices", ["contact_information_id"], name: "vedastore_office_contact_information"
+  add_index "vedastore_offices", ["election_report_id"], name: "vedastore_office_election_report"
+  add_index "vedastore_offices", ["electoral_district_identifier"], name: "vedastore_office_jurisdiction_scope"
+  add_index "vedastore_offices", ["name_id"], name: "vedastore_office_name"
+  add_index "vedastore_offices", ["object_id"], name: "vedastore_office_object_id"
+  add_index "vedastore_offices", ["office_group_id"], name: "vedastore_office_office_group"
+  add_index "vedastore_offices", ["term_id"], name: "vedastore_office_term"
 
-  create_table "vssc_ordered_contest_ballot_selection_id_refs", force: :cascade do |t|
+  create_table "vedastore_ordered_contest_ballot_selection_id_refs", force: :cascade do |t|
     t.integer "ordered_contest_id"
     t.string  "ballot_selection_id_ref"
   end
 
-  add_index "vssc_ordered_contest_ballot_selection_id_refs", ["ordered_contest_id", "ballot_selection_id_ref"], name: "vssc_ordered_contest_ballot_selection_ref"
+  add_index "vedastore_ordered_contest_ballot_selection_id_refs", ["ordered_contest_id", "ballot_selection_id_ref"], name: "vedastore_ordered_contest_ballot_selection_ref"
 
-  create_table "vssc_ordered_contests", force: :cascade do |t|
+  create_table "vedastore_ordered_contests", force: :cascade do |t|
     t.integer  "ballot_style_id"
     t.string   "contest_identifier"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
 
-  add_index "vssc_ordered_contests", ["ballot_style_id"], name: "vscc_ordered_contest_ballot_style"
-  add_index "vssc_ordered_contests", ["contest_identifier"], name: "vssc_ordered_contest_identifier"
+  add_index "vedastore_ordered_contests", ["ballot_style_id"], name: "vscc_ordered_contest_ballot_style"
+  add_index "vedastore_ordered_contests", ["contest_identifier"], name: "vedastore_ordered_contest_identifier"
 
-  create_table "vssc_parties", force: :cascade do |t|
+  create_table "vedastore_parties", force: :cascade do |t|
     t.integer  "election_report_id"
     t.integer  "name_id"
     t.string   "object_id"
@@ -427,26 +427,26 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.string   "contest_identifier"
   end
 
-  add_index "vssc_parties", ["contest_identifier"], name: "vssc_party_contest"
-  add_index "vssc_parties", ["election_report_id"], name: "vssc_party_election_report"
-  add_index "vssc_parties", ["name_id"], name: "vssc_party_name"
-  add_index "vssc_parties", ["object_id"], name: "vssc_party_object_id"
+  add_index "vedastore_parties", ["contest_identifier"], name: "vedastore_party_contest"
+  add_index "vedastore_parties", ["election_report_id"], name: "vedastore_party_election_report"
+  add_index "vedastore_parties", ["name_id"], name: "vedastore_party_name"
+  add_index "vedastore_parties", ["object_id"], name: "vedastore_party_object_id"
 
-  create_table "vssc_party_contest_id_refs", force: :cascade do |t|
+  create_table "vedastore_party_contest_id_refs", force: :cascade do |t|
     t.integer "party_id"
     t.string  "contest_id_ref"
   end
 
-  add_index "vssc_party_contest_id_refs", ["party_id", "contest_id_ref"], name: "vssc_party_contest_id_ref"
+  add_index "vedastore_party_contest_id_refs", ["party_id", "contest_id_ref"], name: "vedastore_party_contest_id_ref"
 
-  create_table "vssc_party_party_id_refs", force: :cascade do |t|
+  create_table "vedastore_party_party_id_refs", force: :cascade do |t|
     t.integer "party_id"
     t.string  "party_id_ref"
   end
 
-  add_index "vssc_party_party_id_refs", ["party_id", "party_id_ref"], name: "vssc_party_party_id_ref"
+  add_index "vedastore_party_party_id_refs", ["party_id", "party_id_ref"], name: "vedastore_party_party_id_ref"
 
-  create_table "vssc_party_registrations", force: :cascade do |t|
+  create_table "vedastore_party_registrations", force: :cascade do |t|
     t.string   "type"
     t.integer  "election_report_id"
     t.string   "party_identifier"
@@ -457,11 +457,11 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",                  null: false
   end
 
-  add_index "vssc_party_registrations", ["election_report_id"], name: "vssc_party_registration_election_report"
-  add_index "vssc_party_registrations", ["party_identifier"], name: "vssc_party_reg_identifier"
-  add_index "vssc_party_registrations", ["party_registrationable_id", "party_registrationable_type"], name: "vssc_party_registrationable"
+  add_index "vedastore_party_registrations", ["election_report_id"], name: "vedastore_party_registration_election_report"
+  add_index "vedastore_party_registrations", ["party_identifier"], name: "vedastore_party_reg_identifier"
+  add_index "vedastore_party_registrations", ["party_registrationable_id", "party_registrationable_type"], name: "vedastore_party_registrationable"
 
-  create_table "vssc_people", force: :cascade do |t|
+  create_table "vedastore_people", force: :cascade do |t|
     t.integer  "election_report_id"
     t.string   "first_name"
     t.integer  "full_name_id"
@@ -480,20 +480,20 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",         null: false
   end
 
-  add_index "vssc_people", ["election_report_id"], name: "vssc_person_election_report"
-  add_index "vssc_people", ["full_name_id"], name: "vssc_person_full_name"
-  add_index "vssc_people", ["object_id"], name: "vssc_person_object_id"
-  add_index "vssc_people", ["profession_id"], name: "vssc_person_profession"
-  add_index "vssc_people", ["title_id"], name: "vssc_perspon_title"
+  add_index "vedastore_people", ["election_report_id"], name: "vedastore_person_election_report"
+  add_index "vedastore_people", ["full_name_id"], name: "vedastore_person_full_name"
+  add_index "vedastore_people", ["object_id"], name: "vedastore_person_object_id"
+  add_index "vedastore_people", ["profession_id"], name: "vedastore_person_profession"
+  add_index "vedastore_people", ["title_id"], name: "vedastore_perspon_title"
 
-  create_table "vssc_rails_vssc_annotated_strings", force: :cascade do |t|
+  create_table "vedastore_rails_vssc_annotated_strings", force: :cascade do |t|
     t.text     "value"
     t.string   "annotation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "vssc_schedules", force: :cascade do |t|
+  create_table "vedastore_schedules", force: :cascade do |t|
     t.integer  "schedulable_id"
     t.string   "schedulable_type"
     t.date     "end_date"
@@ -506,25 +506,25 @@ ActiveRecord::Schema.define(version: 20151015233467) do
     t.datetime "updated_at",             null: false
   end
 
-  add_index "vssc_schedules", ["schedulable_id", "schedulable_type"], name: "vssc_schedulable"
+  add_index "vedastore_schedules", ["schedulable_id", "schedulable_type"], name: "vedastore_schedulable"
 
-  create_table "vssc_spatial_dimensions", force: :cascade do |t|
+  create_table "vedastore_spatial_dimensions", force: :cascade do |t|
     t.integer  "spatial_extent_id"
     t.string   "map_uri"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
 
-  add_index "vssc_spatial_dimensions", ["spatial_extent_id"], name: "vssc_spatial_dimension_spatial_extent"
+  add_index "vedastore_spatial_dimensions", ["spatial_extent_id"], name: "vedastore_spatial_dimension_spatial_extent"
 
-  create_table "vssc_spatial_extents", force: :cascade do |t|
+  create_table "vedastore_spatial_extents", force: :cascade do |t|
     t.text     "coordinates"
     t.string   "format"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "vssc_terms", force: :cascade do |t|
+  create_table "vedastore_terms", force: :cascade do |t|
     t.date     "end_date"
     t.date     "start_date"
     t.string   "office_term_type"

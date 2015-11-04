@@ -1,3 +1,0 @@
-Vssc::OfficeGroupOfficeIdRef.class_eval do
-  include VsscEntity
-end

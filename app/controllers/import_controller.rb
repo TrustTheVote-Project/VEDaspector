@@ -5,7 +5,7 @@ class ImportController < ApplicationController
   end
 
   def upload
-    report = Vssc::ElectionReport.parse_vssc_file params[:entity]
+    report = Vedastore::ElectionReport.parse_ved_file params[:entity]
     report.save!
 
     redirect_to "/election_reports/#{report.id}"

@@ -86,13 +86,13 @@ module EntitiesHelper
     elsif value_type == Fixnum
       # TODO: handle numeric validation
       render partial: "editors/text", locals: { prop: property }
-    elsif value_type == VsscConstants::DATETIME_TYPE
+    elsif value_type == Vedaspector::Property::DATETIME_TYPE
       render partial: "editors/datetime", locals: { prop: property }
-    elsif value_type == VsscConstants::DATE_TYPE
+    elsif value_type == Vedaspector::Property::DATE_TYPE
       render partial: "editors/date", locals: { prop: property }
-    elsif value_type == VsscConstants::BOOLEAN_TYPE
+    elsif value_type == Vedaspector::Property::BOOLEAN_TYPE
       render partial: "editors/boolean", locals: { prop: property }
-    elsif value_type.respond_to? :included_modules and value_type.included_modules.include? VsscEnum
+    elsif property.is_enum_value?
       render partial: "editors/enum", locals: { prop: property }
     else
       logger.warn "No property editor provided for property #{property.property_identifier} of type #{value_type}. Defaulting to string editor."

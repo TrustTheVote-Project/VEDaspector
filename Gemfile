@@ -23,7 +23,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem "VEDaStore", "1.0.4", :git=>"https://github.com/TrustTheVote-Project/VEDaStore", require: 'vssc_rails'
+
+gem 'vedaspace', "~> 1.1.2", :git=>"https://github.com/TrustTheVote-Project/VEDaSpace", :branch => 'master'
+gem "vedastore", "~> 1.1.1", :git=>"https://github.com/TrustTheVote-Project/VEDaStore"
 
 gem 'jquery_file_download-rails'
 

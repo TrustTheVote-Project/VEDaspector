@@ -10,15 +10,14 @@ class EntitiesController < ApplicationController
 
   ### Shared Methods
 
-  def lookup_vssc_class(name)
-    VsscEntity::ENTITY_CLASSES.find { |klass| klass.name.demodulize == name }
+  def lookup_entity_class(name)
+    Vedaspector::Entity::ENTITY_CLASSES.find { |klass| klass.name.demodulize == name }
   end
 
-  # Returns Ruby class for a viewable VSSC entity type, or nil.
+  # Returns Ruby class for a viewable VEDaStore entity type, or nil.
   def lookup_entity_type(entity_name)
-    # TODO: whitelist specific classes?
-    lookup_vssc_class(entity_name.titleize.delete(' ').singularize) or
-      lookup_vssc_class(entity_name.titleize.delete(' '))
+    lookup_entity_class(entity_name.titleize.delete(' ').singularize) or
+      lookup_entity_class(entity_name.titleize.delete(' '))
   end
 
   def assign_entity_type!
@@ -85,7 +84,7 @@ class EntitiesController < ApplicationController
   def list
     assign_entity_type!
 
-    @is_root_entity = @entity_type == Vssc::ElectionReport
+    @is_root_entity = @entity_type == Vedastore::ElectionReport
     @entities = @entity_type.all
   end
 
