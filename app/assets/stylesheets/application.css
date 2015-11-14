@@ -64,3 +64,8 @@
     from { -webkit-transform: rotate(0deg); }
     to { -webkit-transform: rotate(360deg); }
 }
+
+.string-collection .input-group {
+    width: 100%;
+    margin-bottom: 2em;
+}

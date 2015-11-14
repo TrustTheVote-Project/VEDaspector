@@ -1,0 +1,6 @@
+<% prop.value.take(@string_collection_num_shown_values).each do |string| %>
+    <dd><%= string %></dd>
+    <% if prop.value.size > @string_collection_num_shown_values %>
+        <dd>(<%= prop.value.size - @string_collection_num_shown_values %> omitted)</dd>
+    <% end %>
+<% end %>

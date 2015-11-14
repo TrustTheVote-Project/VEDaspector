@@ -2,6 +2,7 @@ class EntitiesController < ApplicationController
 
   def initialize
     super
+    @string_collection_num_shown_values = 10
     @linked_entity_num_shown_properties = 10
 
     @collection_page_size = 30

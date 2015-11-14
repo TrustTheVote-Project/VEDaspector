@@ -18,6 +18,24 @@
 //= require_tree .
 
 function ready() {
+    function onDelete(e) {
+        var $row = $(this).closest('.string-collection-row');
+        if ($row.is(':first-child')) {
+            $row.find('textarea').val('');
+        } else {
+            $row.remove();
+        }
+    }
+
+    $('.string-collection-item-delete').on('click', onDelete);
+    $('.string-collection-item-append').on('click', function(e) {
+        var collection = $(this).closest('.string-collection');
+        var $newItem = collection.find('.string-collection-row:first').clone();
+        $newItem.find('textarea').val('');
+        $newItem.find('.string-collection-item-delete').on('click', onDelete);
+        collection.find('.string-collection-row-container').append($newItem);
+    });
+
     $('.download-button').on('click', function(e) {
         e.preventDefault();
 

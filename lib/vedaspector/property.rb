@@ -4,6 +4,9 @@ class Vedaspector::Property
   DATETIME_TYPE = 'xsd:dateTime'
   DATE_TYPE = 'xsd:date'
 
+  STRING_COLLECTION_TYPE = 'string_collection'
+
+
   attr_reader :entity, :property_definition, :reference_name
 
   # @param [VsscEntity] the object the property is defined on
@@ -19,7 +22,7 @@ class Vedaspector::Property
     if @entity.respond_to? method_name
       @value = @entity.send method_name
     else
-      Rails.logger.warn "Warning: #{entity} doesn't implement #{method_name}: for property '#{reference_name}'"
+      Rails.logger.warn "Warning: #{entity} doesn't implement '#{method_name}'' for property '#{reference_name}'"
     end
   end
 
@@ -71,11 +74,31 @@ class Vedaspector::Property
     end
   end
 
-  # @param [Any] the value to add
-  def value=(value)
-    method_name = "#{@property_definition[:method]}=".to_sym
-    @entity.send(method_name, value)
-    @value = value
+  # @param [Any] the value to set.
+  def value=(new_value)
+    if serialized_property?
+      new_value = new_value.reject {|s| s.empty? }
+    end
+
+    if collection?
+      raise "#{entity}: Unable to call value= for collection #{name}. Use 'append_value' instead."
+    end
+    
+    setter_method = "#{@property_definition[:method]}=".to_sym
+
+    if present_as_value?
+      store_method = associated_class_metadata[:present_as_value][:store]
+
+      if @value.nil?
+        @value = property_association.klass.new
+        @entity.send setter_method, @value
+      end
+
+      @value.send store_method, new_value
+    else
+      @entity.send(setter_method, new_value)
+      @value = new_value
+    end
   end
 
 
@@ -144,12 +167,38 @@ class Vedaspector::Property
     classify_property == :collection
   end
 
-  # Returns whether property links to a 'passthrough' entity, aka a facade for a
-  # backing collection property.
+  def present_as_value?
+    metadata = associated_class_metadata
+    metadata and metadata.has_key? :present_as_value
+  end
+
+  # Whether property links to an entity that should be shown as an inline value.
   # @return [Boolean]
   def present_as_collection?
     metadata = associated_class_metadata
     metadata and metadata.has_key? :present_as_collection
+  end
+
+  # Whether property is a serialized property. A serialized property
+  # is an arbitrarily complex value stored in an entity's column.
+  # Only serialized Arrays of Strings are currently supported.
+  # @return [Boolean] if property is a serialized property
+  def serialized_property?
+    if @entity.has_attribute? property_identifier
+      column = @entity.column_for_attribute property_identifier
+
+      # This introspects Rails columns to determine if the property is a serialized array,
+      # as VEDaSpace (as of v1.1.0) doesn't store that information.
+      cast_type = column.cast_type
+      if cast_type && cast_type.is_a?(ActiveRecord::Type::Serialized)
+        unless cast_type.coder.object_class == Array
+          Rails.logger.warn "Property #{name} on #{@entity.class}: serialized property is an array."
+          return false
+        end
+        return true
+      end
+    end
+    false
   end
 
   # @return [Class, String] The type of this property's value.
@@ -165,6 +214,8 @@ class Vedaspector::Property
       association = property_association
       if association
         property_association.klass
+      elsif serialized_property?
+        Vedaspector::Property::STRING_COLLECTION_TYPE
       else
         @property_definition[:type]
       end
@@ -186,7 +237,7 @@ class Vedaspector::Property
       Rails.logger.warn "Property #{name} on #{@entity.class}: value #{@value} does not match possible enumeration values, and will be ignored."
     end
 
-    # uniq needed as of VEDaStore 1.0.4
+    # uniq needed as of VEDaStore 1.1.1
     value_type.values.uniq.map do |enum_value|
       {:name => enum_value, :selected => @value == enum_value}
     end
