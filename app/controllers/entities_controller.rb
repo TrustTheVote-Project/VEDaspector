@@ -146,15 +146,4 @@ class EntitiesController < ApplicationController
     assign_collection_property!
   end
 
-  def collection_insert
-    assign_entity_type!
-    assign_entity!
-
-    render text: "TODO"
-  end
-
-  def collection_insert_save
-    render text: "TODO"
-  end
-
 end
