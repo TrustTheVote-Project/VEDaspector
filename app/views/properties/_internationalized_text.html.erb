@@ -1,4 +1,4 @@
-<% if prop.value %>
+<% if prop.value and prop.value.preferred_language_text %>
     <dd><%= prop.value.preferred_language_text %>&nbsp;<a href="#" class="unstyled-link glyphicon glyphicon-info-sign" data-toggle="popover" data-placement="right" title="<%= prop.value.inspector_title_string %>" data-popover-content="#internationalized-text-popover-content-<%= prop.value.id %>"></a></dd>
 
     <div class="display-none internationalized-text-popover" id="internationalized-text-popover-content-<%= prop.value.id %>">
