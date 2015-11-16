@@ -65,6 +65,10 @@ module EntitiesHelper
   end
 
   def display_partial_for_value_property(property)
+    if property.present_as_value?
+      return property.associated_class_metadata[:present_as_value][:display]
+    end
+
     value_type = property.value_type
     if value_type == Vedaspector::Property::STRING_COLLECTION_TYPE
       'properties/string_collection'
@@ -98,6 +102,10 @@ module EntitiesHelper
   end
 
   def editor_partial_for_value_property(property)
+    if property.present_as_value?
+      return property.associated_class_metadata[:present_as_value][:editor]
+    end
+
     value_type = property.value_type
     if value_type == String
       "editors/text"

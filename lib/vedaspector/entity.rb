@@ -119,10 +119,10 @@ module Vedaspector::Entity
 
     # Allow entity to be presented as a simple value type.
     def present_as_value(**options)
-      if not options[:type]
-        raise "Missing required type parameter"
-      elsif not options[:get]
-        raise "Missing required getter parameter"
+      if not options[:display]
+        raise "Missing required display parameter"
+      elsif not options[:editor]
+        raise "Missing required editor parameter"
       elsif not options[:store]
         raise "Missing required setter parameter"
       end

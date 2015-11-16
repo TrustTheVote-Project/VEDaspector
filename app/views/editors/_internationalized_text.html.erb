@@ -1,0 +1,25 @@
+<div class="internationalized-text panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><label for="<%= prop.property_identifier %>"><%= prop.name %></label></h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group form-inline">
+      <label for="">Label</label>
+      <input class="form-control label-input" name="entity[<%= prop.property_identifier %>][label]" value="<%= prop.value and prop.value.label %>" />
+    </div>
+    <div class="form-group internationalized-text-row-container">
+        <% unless prop.value.nil? || prop.value.language_strings.empty? %>
+            <% prop.value.language_strings.each do |string| %>
+                <%= render partial: 'editors/internationalized_text_row', locals: { language: string.language, text: string.text, prop: prop } %>
+            <% end %>
+        <% else %>
+            <%= render partial: 'editors/internationalized_text_row', locals: { language: nil, text: nil, prop: prop } %>
+        <% end %>
+    </div>
+
+    <div>
+        <span class="btn btn-default internationalized-text-append"><span class="glyphicon glyphicon-plus"></span> Add language string</span>
+    </div>
+  </div>
+</div>
+

@@ -15,12 +15,20 @@
  *= require bootstrap
  */
 
+.unstyled-link {
+    text-decoration: none !important;
+}
+
 .content {
     margin: 2em;
 }
 
 .inline-block {
     display: inline-block;
+}
+
+.display-none {
+    display: none;
 }
 
 .float-right {
@@ -68,4 +76,29 @@
 .string-collection .input-group {
     width: 100%;
     margin-bottom: 2em;
+}
+
+.internationalized-text-popover .dl-vertical .dd {
+    margin-left: 0em;
+}
+
+.internationalized-text .form-group {
+    margin-right: 1em;
+}
+
+.internationalized-text .form-group input.language {
+    width: 100px;
+}
+
+.internationalized-text .form-group textarea {
+    width: 400px;
+}
+
+.internationalized-text .form-group .label-input {
+    width: 125px;
+    margin-left: 1em;
+}
+
+.internationalized-text .form-group {
+    margin-bottom: 1em;
 }

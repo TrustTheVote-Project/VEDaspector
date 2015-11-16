@@ -22,8 +22,12 @@ class Vedaspector::Property
     if @entity.respond_to? method_name
       @value = @entity.send method_name
     else
-      Rails.logger.warn "Warning: #{entity} doesn't implement '#{method_name}'' for property '#{reference_name}'"
+      Rails.logger.warn "#{self}: #{entity} doesn't implement '#{method_name}'"
     end
+  end
+
+  def to_s
+    "#{@entity.class}::#{@reference_name}"
   end
 
   # THe Rails association for the linked entity or collection if one exists.
@@ -63,25 +67,21 @@ class Vedaspector::Property
       else
         []
       end
-    elsif metadata and metadata[:present_as_value]
-      unless @value.nil?
-        @value.send metadata[:present_as_value][:get]
-      else
-        nil
-      end
     else
       @value
     end
   end
 
+  # Assigns a new value for the property.
   # @param [Any] the value to set.
+  # @raise [Exception] if called on a collection.
   def value=(new_value)
     if serialized_property?
       new_value = new_value.reject {|s| s.empty? }
     end
 
     if collection?
-      raise "#{entity}: Unable to call value= for collection #{name}. Use 'append_value' instead."
+      raise "#{self}: Unable to call value= for collection. Use 'append_value' instead."
     end
     
     setter_method = "#{@property_definition[:method]}=".to_sym
@@ -95,6 +95,7 @@ class Vedaspector::Property
       end
 
       @value.send store_method, new_value
+      @value.save!
     else
       @entity.send(setter_method, new_value)
       @value = new_value
@@ -108,8 +109,6 @@ class Vedaspector::Property
     unless collection?
       raise "#{self}: append_value can only be called on a collection, not on a #{classify_property}"
     end
-
-    # TODO: should handle serialize as Array cases
 
     if present_as_collection?
       metadata = associated_class_metadata
@@ -143,7 +142,7 @@ class Vedaspector::Property
     association = property_association
     metadata = associated_class_metadata
 
-    if not metadata or metadata.has_key? :present_as_value
+    if not metadata or present_as_value?
       :value
     elsif association.collection? or metadata.has_key? :present_as_collection
       :collection
@@ -167,6 +166,9 @@ class Vedaspector::Property
     classify_property == :collection
   end
 
+  # Whether property links to an entity that should be shown as though
+  # it were an inline value of the parent entity.
+  # @return [Boolean]
   def present_as_value?
     metadata = associated_class_metadata
     metadata and metadata.has_key? :present_as_value
@@ -187,12 +189,11 @@ class Vedaspector::Property
     if @entity.has_attribute? property_identifier
       column = @entity.column_for_attribute property_identifier
 
-      # This introspects Rails columns to determine if the property is a serialized array,
-      # as VEDaSpace (as of v1.1.0) doesn't store that information.
+      # This introspects Rails columns to determine if the property is a serialized array.
       cast_type = column.cast_type
       if cast_type && cast_type.is_a?(ActiveRecord::Type::Serialized)
         unless cast_type.coder.object_class == Array
-          Rails.logger.warn "Property #{name} on #{@entity.class}: serialized property is an array."
+          Rails.logger.warn "#{self}: only Arrays are supported in serialized properties"
           return false
         end
         return true
@@ -201,12 +202,10 @@ class Vedaspector::Property
     false
   end
 
-  # @return [Class, String] The type of this property's value.
+  # @return [Class, String] the type of this property's value.
   def value_type
     metadata = associated_class_metadata
-    if metadata and metadata.has_key? :present_as_value
-      metadata[:present_as_value][:type]
-    elsif present_as_collection?
+    if present_as_collection?
       backing_collection_method = metadata[:present_as_collection][:get]
       backing_association = property_association.klass.reflect_on_association backing_collection_method
       backing_association.klass
@@ -222,11 +221,12 @@ class Vedaspector::Property
     end
   end
 
+  # @return [Boolean] is this an enumeration property
   def is_enum_value?
     value_type.respond_to? :included_modules and value_type.included_modules.include? Vedaspace::Enum
   end
 
-  # @raise [Exception] If this is not an enumeration property.
+  # @raise [Exception] if this is not an enumeration property.
   # @return [Hash]
   def enum_values
     unless is_enum_value?
@@ -243,9 +243,9 @@ class Vedaspector::Property
     end
   end
 
-  # Lazily fetch value properties of child entity.
-  # @raise [Exception] If this is not an entity property.
-  # @return [Array<Vedaspector::Property>] The linked entity's child properties
+  # Fetch value properties of child entity.
+  # @raise [Exception] if this is not an entity property.
+  # @return [Array<Vedaspector::Property>] the linked entity's child properties
   def child_value_properties
     unless classify_property == :entity
       raise "child_value_properties should only be called on an entity property"
