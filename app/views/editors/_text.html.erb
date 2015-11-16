@@ -1,4 +1,4 @@
 <div class="form-group text">
     <label for="<%= prop.property_identifier %>"><%= prop.name %></label>
-    <input type="text" name="entity[<%= prop.property_identifier %>]" class="form-control" value="<%= prop.value %>" />
+    <textarea name="entity[<%= prop.property_identifier %>]" class="form-control" rows="1"><%= prop.value %></textarea>
 </div>
