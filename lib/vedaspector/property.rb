@@ -83,29 +83,25 @@ class Vedaspector::Property
     if collection?
       raise "#{self}: Unable to call value= for collection. Use 'append_value' instead."
     end
-    
-    setter_method = "#{@property_definition[:method]}=".to_sym
 
     if present_as_value?
       store_method = associated_class_metadata[:present_as_value][:store]
 
       if @value.nil?
-        @value = property_association.klass.new
-        @entity.send setter_method, @value
+        invoke_setter property_association.klass.new
       end
 
       @value.send store_method, new_value
       @value.save!
     else
-      @entity.send(setter_method, new_value)
-      @value = new_value
+      invoke_setter new_value
     end
   end
 
 
   # @param [Any] the value to append.
   # @raise [Exception] if property is not a collection.
-  def append_value(value)
+  def append_value(new_value)
     unless collection?
       raise "#{self}: append_value can only be called on a collection, not on a #{classify_property}"
     end
@@ -113,12 +109,12 @@ class Vedaspector::Property
     if present_as_collection?
       metadata = associated_class_metadata
       if @value.nil?
-        self.value = property_association.klass.new
+        invoke_setter property_association.klass.new
       end
       backing_collection = @value.send metadata[:present_as_collection][:get]
-      backing_collection << value
+      backing_collection << new_value
     else
-      @entity.send(@property_definition[:method]) << value
+      @entity.send(@property_definition[:method]) << new_value
     end
   end
 
@@ -262,6 +258,14 @@ class Vedaspector::Property
     end
     
     @child_value_properties
+  end
+
+  private
+
+  def invoke_setter(new_value)
+    setter_method = "#{@property_definition[:method]}=".to_sym
+    @entity.send setter_method, new_value
+    @value = new_value
   end
 
 end

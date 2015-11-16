@@ -23,9 +23,9 @@ Vedastore::InternationalizedText.class_eval do
 
   def set_language_strings(input)
     self.label = input['label']
-    new_strings = input['strings'].reject{|s| s['language'].blank? && s['text'].blank? }.map do |s|
-      Vedastore::LanguageString.new language: s['language'], text: s['text']
-    end
+    new_strings = input['strings']
+      .reject {|s| s['language'].blank? && s['text'].blank? }
+      .map { |s| Vedastore::LanguageString.new language: s['language'], text: s['text'] }
     language_strings.replace(new_strings)
   end
 
