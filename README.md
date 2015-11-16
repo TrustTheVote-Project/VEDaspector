@@ -1,12 +1,13 @@
 # VEDaspector
 
-VEDaspector is a tool for exploring election reports in the VSSC election data format.
+VEDaspector is a Ruby on Rails application for exploring and modifying election results in the [NIST ERR format](http://www.nist.gov/itl/vote/ieee-swg-p1622.cfm).
 
-To get started, you‘ll need to create your database tables and load an election report:
+To run this application, you'll need to perform the following steps in your command line:
 
+    $ git clone git@github.com:TrustTheVote-Project/VEDaspector.git
+    $ cd VEDaspector
+    $ bundle install
     $ rake db:migrate
-    $ rails console
-    > report = Vssc::ElectionReport.parse_vssc_file("MyVSSCFile.xml")
-    > report.save!
+    $ rails server
 
-Then, start your rails application (`rails server`) and you can browse it at `http://localhost:3000`.
+Once VEDaspector is running, you can import a saved election report by opening `http://localhost:3000/import` in your web browser, or create a blank election report.
