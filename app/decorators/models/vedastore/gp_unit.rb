@@ -3,7 +3,7 @@ Vedastore::GpUnit.class_eval do
   
   def inspector_title_string
     if name
-      "GP Unit: #{name.preferred_language_text}"
+      "GP Unit: #{name}"
     else
       "Unnamed GP Unit"
     end
