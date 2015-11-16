@@ -1,4 +1,4 @@
-# Setup
+## Setup
 
 VEDaspector is a Ruby on Rails application for exploring and modifying election results in the [NIST ERR format](http://www.nist.gov/itl/vote/ieee-swg-p1622.cfm).
 
@@ -13,7 +13,7 @@ To run this application, you'll need to perform the following steps in your comm
 Once VEDaspector is running, you can import a saved election report by opening `http://localhost:3000/import` in your web browser, or `http://localhost:3000/election_reports/new` to create a new election report. You can find a sample report file [in the VEDaStore repo](https://github.com/TrustTheVote-Project/VEDaStore/blob/master/spec/fixtures/NY_TEST.xml).
 
 
-# Implementation
+## Implementation
 
 VEDaspector is built using the [VEDaStore Rails engine](https://github.com/TrustTheVote-Project/VEDaStore), which implements parsing and persistence of the entities from the NIST ERR data format. VEDaspector displays a given entity by building an HTML display of its properties. VEDaspector can also generate corresponding editing forms for these properties.
 
@@ -23,7 +23,7 @@ Properties come in three types:
 * *Linked entities*: entities can reference other entities, e.g. an Election Report linking to its Election.
 * *Collections*: entities can reference collections of other entities, e.g. an Election containing an collection of its participating Candidates.
 
-# Tests
+## Tests
 
 Some tests have been written for VEDaspector's entity update logic. You can run them with the following:
 
