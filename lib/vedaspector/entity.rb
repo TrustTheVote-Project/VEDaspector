@@ -39,8 +39,26 @@ module Vedaspector::Entity
     properties = []
 
     properties += elements.map do |name, element|
-      Vedaspector::Property.new(self, element, name)
-    end.compact
+      element_klass = element[:type].to_s
+      concrete_element_klass = nil;
+      
+      begin
+        concrete_element_klass = element_klass.constantize.concrete_class_name.constantize
+      rescue
+      end
+      
+      if self.class.inspector_metadata[:specific_types] && self.class.inspector_metadata[:specific_types][name]
+        element[:type] = self.class.inspector_metadata[:specific_types][name]
+      end
+      
+      if concrete_element_klass.respond_to?(:concrete_types)
+        concrete_element_klass.concrete_types.collect do |t|
+          Vedaspector::Property.new(self, element.merge(type: t), t.name)
+        end
+      else
+        Vedaspector::Property.new(self, element, name)
+      end
+    end.flatten.compact
 
     properties += xml_attributes.map do |name, attribute|
       Vedaspector::Property.new(self, attribute, name)
@@ -115,6 +133,11 @@ module Vedaspector::Entity
 
     def preferred_name(name)
       inspector_metadata[:preferred_name] = name
+    end
+    
+    def specific_type(type_name, type_class)
+      inspector_metadata[:specific_types] ||= {}
+      inspector_metadata[:specific_types][type_name] = type_class
     end
 
     # Allow entity to be presented as a simple value type.

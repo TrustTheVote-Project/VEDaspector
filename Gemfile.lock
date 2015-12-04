@@ -1,22 +1,3 @@
-GIT
-  remote: https://github.com/TrustTheVote-Project/VEDaSpace
-  revision: 01a21e0b7f714ebac7296a7b8c17f6c8201a136e
-  branch: master
-  specs:
-    vedaspace (1.1.2)
-      activemodel (~> 4)
-      activesupport (~> 4)
-      nokogiri (~> 1.6)
-
-GIT
-  remote: https://github.com/TrustTheVote-Project/VEDaStore
-  revision: f94d461b6b4f34b8327b63f95338ba0334a7c1d0
-  specs:
-    vedastore (1.1.1)
-      nokogiri (~> 1.6.0)
-      rails (~> 4.2.1)
-      vedaspace (~> 1.1.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -151,6 +132,14 @@ GEM
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    vedaspace (1.1.6.4)
+      activemodel (~> 4)
+      activesupport (~> 4)
+      nokogiri (~> 1.6)
+    vedastore (1.1.2.4)
+      nokogiri (~> 1.6.0)
+      rails (~> 4.2.1)
+      vedaspace (~> 1.1.6.4)
     web-console (2.2.1)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
@@ -173,6 +162,6 @@ DEPENDENCIES
   sqlite3
   turbolinks
   uglifier (>= 1.3.0)
-  vedaspace (~> 1.1.2)!
-  vedastore (~> 1.1.1)!
+  vedaspace (~> 1.1.6.4)
+  vedastore (~> 1.1.2.4)
   web-console (~> 2.0)

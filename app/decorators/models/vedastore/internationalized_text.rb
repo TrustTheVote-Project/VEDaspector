@@ -12,12 +12,13 @@ Vedastore::InternationalizedText.class_eval do
   present_as_value display: 'properties/internationalized_text', editor: 'editors/internationalized_text', store: :set_language_strings
 
   def preferred_language_text
-    preferred_language = VEDaspector::Application.config.preferred_language
-    found_string = language_strings.find(language_strings.first) {|s| s.language == preferred_language }
+    preferred_language = VEDaspector::Application.config.preferred_language || ''
+    # found_string = language_strings.find(language_strings.first) {|s| s.language == preferred_language }
+    found_string = language_strings.where(language: preferred_language).first
     if found_string
       found_string.text
     else
-      nil
+      language_strings.first ? language_strings.first.text : nil
     end
   end
 

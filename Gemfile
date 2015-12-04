@@ -24,8 +24,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 
-gem 'vedaspace', "~> 1.1.2", :git=>"https://github.com/TrustTheVote-Project/VEDaSpace", :branch => 'master'
-gem "vedastore", "~> 1.1.1", :git=>"https://github.com/TrustTheVote-Project/VEDaStore"
+gem 'vedaspace', "~> 1.1.6.4"#, :git=>"https://github.com/TrustTheVote-Project/VEDaSpace", require: false
+gem "vedastore", "~> 1.1.2.4"#, :git=>"https://github.com/TrustTheVote-Project/VEDaStore"
 
 gem 'jquery_file_download-rails'
 

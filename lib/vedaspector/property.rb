@@ -39,8 +39,9 @@ class Vedaspector::Property
   # The inspector metadata of the associated class if present.
   # @return [Hash, nil]
   def associated_class_metadata
-    association = property_association
-    if association
+    if property_definition[:type] && property_definition[:type].respond_to?(:inspector_metadata)
+      property_definition[:type].inspector_metadata
+    elsif association = property_association
       association.klass.inspector_metadata
     else
       nil
@@ -206,8 +207,9 @@ class Vedaspector::Property
       backing_association = property_association.klass.reflect_on_association backing_collection_method
       backing_association.klass
     else
-      association = property_association
-      if association
+      if property_definition[:type] && property_definition[:type].respond_to?(:inspector_metadata)
+        property_definition[:type]
+      elsif association = property_association
         property_association.klass
       elsif serialized_property?
         Vedaspector::Property::STRING_COLLECTION_TYPE
