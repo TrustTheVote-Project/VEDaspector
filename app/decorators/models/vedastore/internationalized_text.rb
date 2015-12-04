@@ -9,7 +9,7 @@ Vedastore::InternationalizedText.class_eval do
     end
   end
 
-  present_as_value type: String, get: :preferred_language_text, store: :set_preferred_language_text
+  present_as_value display: 'properties/internationalized_text', editor: 'editors/internationalized_text', store: :set_language_strings
 
   def preferred_language_text
     preferred_language = VEDaspector::Application.config.preferred_language
@@ -21,16 +21,12 @@ Vedastore::InternationalizedText.class_eval do
     end
   end
 
-  def set_preferred_language_text(text)
-    preferred_language = VEDaspector::Application.config.preferred_language
-    string = language_strings.find(language_strings.first) {|s| s.language == preferred_language }
-    if string
-      string.text = text
-    else
-      string = Vedastore::LanguageString.new language: preferred_language, text: text
-      language_strings << string
-    end
-    string.save!
+  def set_language_strings(input)
+    self.label = input['label']
+    new_strings = input['strings']
+      .reject {|s| s['language'].blank? && s['text'].blank? }
+      .map { |s| Vedastore::LanguageString.new language: s['language'], text: s['text'] }
+    language_strings.replace(new_strings)
   end
 
 end

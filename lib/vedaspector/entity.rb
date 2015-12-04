@@ -56,34 +56,11 @@ module Vedaspector::Entity
 
   def update_and_save!(params, parent_property: nil)
     params.each do |key, value|
-      association = self.class.reflect_on_association key
-
-      setter_method = "#{key}=".to_sym
-
-      if association and association.collection?
-        raise "Unable to set value for collection #{key}"
-      elsif association
-        unless association.klass.inspector_metadata.has_key? :present_as_value
-          raise "Unable to set value for linked entity #{key}"
-        end
-
-        present_as_value = association.klass.inspector_metadata[:present_as_value]
-        store_method = present_as_value[:store]
-
-        linked_entity = send key.to_sym
-        if linked_entity.nil?
-          linked_entity = association.klass.new
-          linked_entity.send store_method, value
-          send setter_method, linked_entity
-        else
-          linked_entity.send store_method, value
-        end
-      else
-        if respond_to? setter_method
-          send setter_method, value
-        else
-          Rails.logger.warn "Unable to call #{setter_method}: on #{self}: method not defined"
-        end
+      begin
+        property = entity_property key.to_s
+        property.value = value
+      rescue Exception => e
+        Rails.logger.error "#{self}: error updating '#{key}' property: #{e.message}"
       end
     end
 
@@ -142,10 +119,10 @@ module Vedaspector::Entity
 
     # Allow entity to be presented as a simple value type.
     def present_as_value(**options)
-      if not options[:type]
-        raise "Missing required type parameter"
-      elsif not options[:get]
-        raise "Missing required getter parameter"
+      if not options[:display]
+        raise "Missing required display parameter"
+      elsif not options[:editor]
+        raise "Missing required editor parameter"
       elsif not options[:store]
         raise "Missing required setter parameter"
       end

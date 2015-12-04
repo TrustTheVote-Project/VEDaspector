@@ -64,6 +64,29 @@ module EntitiesHelper
     render partial: "properties", locals: locals
   end
 
+  def display_partial_for_value_property(property)
+    if property.present_as_value?
+      return property.associated_class_metadata[:present_as_value][:display]
+    end
+
+    value_type = property.value_type
+    if value_type == Vedaspector::Property::STRING_COLLECTION_TYPE
+      'properties/string_collection'
+    else
+      'properties/text'
+    end
+  end
+
+  def render_property_value(property)
+    partial_name = display_partial_for_value_property property
+    if partial_name
+      render partial: partial_name, locals: { prop: property }
+    else
+      logger.warn "No display provided for property #{property.property_identifier} of type #{property.value_type}. Defaulting to String display."
+      render partial: "properties/text", locals: { prop: property }
+    end
+  end
+
   # Renders list of entity's displayable elements and attributes.
   def render_entity_editor_form(entity)
     grouped_properties = entity.entity_properties.group_by &:classify_property
@@ -78,24 +101,37 @@ module EntitiesHelper
     render partial: "edit_properties", locals: locals
   end
 
-  def render_property_editor(property)
-    value_type = property.value_type
+  def editor_partial_for_value_property(property)
+    if property.present_as_value?
+      return property.associated_class_metadata[:present_as_value][:editor]
+    end
 
+    value_type = property.value_type
     if value_type == String
-      render partial: "editors/text", locals: { prop: property }
+      "editors/text"
     elsif value_type == Fixnum
-      # TODO: handle numeric validation
-      render partial: "editors/text", locals: { prop: property }
+      "editors/text"
     elsif value_type == Vedaspector::Property::DATETIME_TYPE
-      render partial: "editors/datetime", locals: { prop: property }
+      "editors/datetime"
     elsif value_type == Vedaspector::Property::DATE_TYPE
-      render partial: "editors/date", locals: { prop: property }
+      "editors/date"
     elsif value_type == Vedaspector::Property::BOOLEAN_TYPE
-      render partial: "editors/boolean", locals: { prop: property }
+      "editors/boolean"
+    elsif value_type == Vedaspector::Property::STRING_COLLECTION_TYPE
+      "editors/string_collection"
     elsif property.is_enum_value?
-      render partial: "editors/enum", locals: { prop: property }
+      "editors/enum"
     else
-      logger.warn "No property editor provided for property #{property.property_identifier} of type #{value_type}. Defaulting to string editor."
+      nil
+    end
+  end
+
+  def render_property_editor(property)
+    partial_name = editor_partial_for_value_property property
+    if partial_name
+      render partial: partial_name, locals: { prop: property }
+    else
+      logger.warn "No editor provided for property #{property.property_identifier} of type #{property.value_type}. Defaulting to String editor."
       render partial: "editors/text", locals: { prop: property }
     end
   end

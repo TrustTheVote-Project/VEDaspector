@@ -2,6 +2,7 @@ class EntitiesController < ApplicationController
 
   def initialize
     super
+    @string_collection_num_shown_values = 10
     @linked_entity_num_shown_properties = 10
 
     @collection_page_size = 30
@@ -143,17 +144,6 @@ class EntitiesController < ApplicationController
     assign_entity_type!
     assign_entity!
     assign_collection_property!
-  end
-
-  def collection_insert
-    assign_entity_type!
-    assign_entity!
-
-    render text: "TODO"
-  end
-
-  def collection_insert_save
-    render text: "TODO"
   end
 
 end

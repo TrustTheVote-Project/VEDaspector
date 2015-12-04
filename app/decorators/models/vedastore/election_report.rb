@@ -15,10 +15,10 @@ Vedastore::ElectionReport.class_eval do
   end
 
   def inspector_title_string
-    if election and election.name
+    if election and election.name and election.name.preferred_language_text
         "Election Report: #{election.name.preferred_language_text}"
     else
-        "Unnamed Election Report"
+        "Election Report"
     end
   end
 end

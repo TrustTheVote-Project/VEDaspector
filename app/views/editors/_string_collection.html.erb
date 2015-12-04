@@ -1,0 +1,21 @@
+<div class="string-collection panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><label for="<%= prop.property_identifier %>"><%= prop.name %></label></h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group string-collection-row-container">
+        <% unless prop.value.empty? %>
+            <% prop.value.each do |string| %>
+                <%= render partial: 'editors/string_collection_row', locals: { text: string, prop: prop } %>
+            <% end %>
+        <% else %>
+            <%= render partial: 'editors/string_collection_row', locals: { text: nil, prop: prop } %>
+        <% end %>
+    </div>
+
+    <div>
+        <span class="btn btn-default string-collection-append"><span class="glyphicon glyphicon-plus"></span> Add <%= prop.name %></span>
+    </div>
+  </div>
+</div>
+

@@ -17,7 +17,41 @@
 //= require turbolinks
 //= require_tree .
 
+function setupItemContainer(prefix) {
+    var rowDeleteFunction = function(e) {
+        var $row = $(this).closest(prefix + '-row');
+        if ($row.siblings().size() == 0) {
+            $row.find('input').val('');
+            $row.find('textarea').val('');
+        } else {
+            $row.remove();
+        }
+    };
+
+    $(prefix + '-row-delete').on('click', rowDeleteFunction);
+    $(prefix + '-append').on('click', function(e) {
+        var collection = $(this).closest(prefix);
+        var $newItem = collection.find(prefix + '-row:first').clone();
+        $newItem.find('input').val('');
+        $newItem.find('textarea').val('');
+        $newItem.find(prefix + '-row-delete').on('click', rowDeleteFunction);
+        collection.find(prefix + '-row-container').append($newItem);
+    });
+
+}
+
 function ready() {
+    setupItemContainer('.string-collection');
+    setupItemContainer('.internationalized-text');
+
+    $('body').on('click', function(e) {
+        $('[data-toggle=popover]').each(function () {
+            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                $(this).popover('hide');
+            }
+        });
+    });
+
     $('.download-button').on('click', function(e) {
         e.preventDefault();
 
@@ -48,6 +82,14 @@ function ready() {
 
             $('#entity-delete-form').submit();
         });
+    });
+
+    $('[data-toggle="popover"]').popover({
+        html : true,
+        content: function() {
+            var content = $(this).attr("data-popover-content");
+            return $(content).clone().removeClass('display-none').html();
+        }
     });
 }
 
