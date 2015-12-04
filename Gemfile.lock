@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/TrustTheVote-Project/VEDaSpace
-  revision: 010482366cbe2eeca3c00456f6d10e3e4b3f4b71
+  revision: 01a21e0b7f714ebac7296a7b8c17f6c8201a136e
   branch: master
   specs:
     vedaspace (1.1.2)
@@ -10,12 +10,12 @@ GIT
 
 GIT
   remote: https://github.com/TrustTheVote-Project/VEDaStore
-  revision: 9ed51101a31bfa0c1e41a666c6fc9c16742e807e
+  revision: f94d461b6b4f34b8327b63f95338ba0334a7c1d0
   specs:
     vedastore (1.1.1)
       nokogiri (~> 1.6.0)
       rails (~> 4.2.1)
-      vedaspace (~> 1.1.0)
+      vedaspace (~> 1.1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -59,14 +59,14 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
-    byebug (7.0.0)
+    byebug (8.2.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.9.1.1)
+    coffee-script-source (1.10.0)
     debug_inspector (0.0.2)
     erubis (2.7.0)
     execjs (2.6.0)
@@ -133,7 +133,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    spring (1.4.0)
+    spring (1.4.1)
     sprockets (3.4.0)
       rack (> 1, < 3)
     sprockets-rails (2.3.3)
@@ -176,6 +176,3 @@ DEPENDENCIES
   vedaspace (~> 1.1.2)!
   vedastore (~> 1.1.1)!
   web-console (~> 2.0)
-
-BUNDLED WITH
-   1.10.6
